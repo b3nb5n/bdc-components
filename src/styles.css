@@ -1,0 +1,21 @@
+:root {
+	--black: #000000;
+	--grey: #333333;
+	--lightGrey: #e5e5e5;
+	--surfaceOne: #fafafa;
+	--surfaceTwo: #ffffff;
+	--primary: #496dc2;
+}
+
+::selection {
+	background: var(--primary);
+	color: #fff;
+}
+
+* {
+	box-sizing: border-box;
+	font-family: din-2014, sans-serif;
+	font-size: 18px;
+	line-height: 24px;
+	color: inherit;
+}

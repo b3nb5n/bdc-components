@@ -1,10 +1,14 @@
-import React from 'react'
-
-import { ExampleComponent } from 'bdc-components'
-import 'bdc-components/dist/index.css'
+import { Form, Input } from 'bdc-components';
+import 'bdc-components/dist/index.css';
+import React from 'react';
 
 const App = () => {
-  return <ExampleComponent text="Create React Library Example 😄" />
-}
+	return (
+		<Form>
+			<Input name="test" />
+			<Input name="inputTwo" inputType="tel" value={4} />
+		</Form>
+	);
+};
 
-export default App
+export default App;
