@@ -1,9 +1,5 @@
-import { Formik } from 'formik';
+import { Field, Formik } from 'formik';
 import React from 'react';
-import { AttachmentInputProps, AttachmentmentInput } from '../attachment input/attachment-input';
-import { DateInput, DateInputProps } from '../date input/date-input';
-import { OptionInput, OptionInputProps } from '../option input/option-input';
-import { ReferenceInput, ReferenceInputProps } from '../reference input/reference-input';
 import { TextInput, TextInputProps } from '../text input/text-input';
 
 export type FieldStructure =
@@ -14,27 +10,36 @@ export type FieldStructure =
 	| AttachmentInputProps;
 
 interface FormProps {
+	name: string;
 	fieldStructures: FieldStructure[];
 	initialValues: { [key: string]: string };
 	onSubmit: (data: { [key: string]: string }) => void;
+	onClose: () => void;
 }
 
-export const Form: React.FC<FormProps> = ({ fieldStructures, initialValues, onSubmit }) => {
+export const Form: React.FC<FormProps> = ({ name, fieldStructures, initialValues, onSubmit, onClose }) => {
 	const inputs = fieldStructures.map(fieldStructure => {
-		return fieldStructure.type === 'text'
-			? TextInput(fieldStructure)
-			: fieldStructure.type === 'date'
-				? DateInput(fieldStructure)
-				: fieldStructure.type === 'option'
-					? OptionInput(fieldStructure)
-					: fieldStructure.type === 'reference'
-						? ReferenceInput(fieldStructure)
-						: fieldStructure.type === 'attachment' ? AttachmentmentInput(fieldStructure) : null;
+		return fieldStructure.type === 'text' ? (
+			<Field name={fieldStructure.name} as={TextInput(fieldStructure)} />
+		) : null;
 	});
 
 	return (
-		<Formik initialValues={initialValues} onSubmit={onSubmit}>
-			{({ values, errors, handleSubmit, isSubmitting }) => {}}
-		</Formik>
+		<section className="scrimming">
+			<div className="card">
+				<div className="card-head">
+					<button className="card-close" onClick={onClose} />
+					<h2>{name}</h2>
+				</div>
+
+				<div className="card-content">
+					<Formik initialValues={initialValues} onSubmit={onSubmit}>
+						{({ handleSubmit }) => <form onSubmit={handleSubmit}>{inputs}</form>}
+					</Formik>
+				</div>
+
+				<div className="card-actions" />
+			</div>
+		</section>
 	);
 };
