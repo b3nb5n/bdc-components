@@ -34,6 +34,8 @@
     "jsx-quotes": 0,
     "camelcase": 0,
     "react/jsx-indent-props": 0,
-    "no-unused-vars": 0
+    "no-unused-vars": 0,
+    "react/jsx-closing-tag-location": 0,
+    "array-bracket-spacing": 0
   }
 }
