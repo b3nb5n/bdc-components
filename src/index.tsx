@@ -1,2 +1,3 @@
 import './styles.css';
-export { FormModal as Form } from './form modal/form-modal';
+export { FormModal } from './form modal/form-modal';
+export { Table } from './table/table';

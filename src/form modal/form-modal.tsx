@@ -1,68 +1,49 @@
-import DateFnsUtils from '@date-io/date-fns';
-import { Button, TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import 'date-fns';
+import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
+import { ThemeProvider } from '../theme';
+import { CloseButton } from './close button/close-button';
+import { DateInput, DateInputStructure } from './date input/date-input';
 import styles from './form.module.css';
+import { OptionInput, OptionInputStructure } from './option input/option-input';
+import { TextInput, TextInputStructure } from './text input/text-input';
 
-interface TextInputStructure {
-	type: 'text';
-	name: string;
-	label?: string;
-	helpText?: string;
-	required?: boolean;
-	multiline?: boolean;
-}
-
-interface DateInputStructure {
-	type: 'date';
-	name: string;
-	label?: string;
-	helpText?: string;
-	required?: boolean;
-}
-
-interface OptionInputStructure {
-	type: 'option';
-	name: string;
-	label?: string;
-	helpText?: string;
-	required?: boolean;
-	options: string[];
-	multi?: boolean;
-}
-
-interface AttachmentInputStructure {
-	type: 'attachment';
-	name: string;
-	label?: string;
-	helpText?: string;
-	required?: boolean;
-	multi?: boolean;
-	acceptedTypes?: string[];
-}
-
-export type FieldStructure = TextInputStructure | DateInputStructure | OptionInputStructure | AttachmentInputStructure;
-
-interface FormModalState {
-	[key: string]: string | string[] | Date | null;
-}
+type FieldStructure = TextInputStructure | DateInputStructure | OptionInputStructure;
+type FormModalState = { [key: string]: string | string[] | Date | null };
 
 interface FormModalProps {
 	name: string;
 	fieldStructures: FieldStructure[];
-	initialValues: FormModalState;
-	onSubmit: (values: FormModalState) => void;
-	onClose: () => void;
+	initialValues?: FormModalState;
+	handleSubmit: (values: FormModalState) => void | Promise<void>;
+	handleClose: () => void;
 }
 
-export const FormModal: React.FC<FormModalProps> = ({ name, fieldStructures, initialValues, onSubmit }) => {
-	const [ values, setValues ] = useState<FormModalState>(initialValues);
+export const FormModal: React.FC<FormModalProps> = ({
+	name,
+	fieldStructures,
+	initialValues,
+	handleSubmit,
+	handleClose
+}) => {
+	const defaultValue = (field: FieldStructure) => {
+		return field.type === 'text'
+			? ''
+			: field.type === 'option' && !field.multi
+				? null
+				: field.type === 'option' && field.multi ? [] : field.type === 'date' ? null : null;
+	};
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const initialState = {};
+	fieldStructures.forEach(field => {
+		const initialValue = initialValues ? initialValues[field.name] : undefined;
+		initialState[field.name] = initialValue || defaultValue(field);
+	});
+
+	const [ values, setValues ] = useState<any>(initialState);
+
+	const submit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		onSubmit(values);
+		handleSubmit(values);
 	};
 
 	const handleChange = (name: string, value: string | string[] | Date | null) => {
@@ -71,58 +52,27 @@ export const FormModal: React.FC<FormModalProps> = ({ name, fieldStructures, ini
 		setValues(newValues);
 	};
 
-	const fields = fieldStructures.map(fieldStructure => {
+	const inputs = fieldStructures.map(fieldStructure => {
 		return fieldStructure.type === 'text' ? (
-			<TextField
-				name={fieldStructure.name}
+			<TextInput
+				fieldStructure={fieldStructure}
+				value={values[fieldStructure.name]}
+				handleChange={handleChange}
 				key={fieldStructure.name}
-				label={fieldStructure.label || fieldStructure.name}
-				helperText={fieldStructure.helpText}
-				multiline={!!fieldStructure.multiline}
-				required={!!fieldStructure.required}
-				onChange={event => handleChange(fieldStructure.name, event.target.value)}
-				size="small"
-				variant="outlined"
 			/>
 		) : fieldStructure.type === 'date' ? (
-			<MuiPickersUtilsProvider utils={DateFnsUtils} key={fieldStructure.name}>
-				<KeyboardDatePicker
-					name={fieldStructure.name}
-					label={fieldStructure.label || fieldStructure.name}
-					value={values[fieldStructure.name]}
-					helperText={fieldStructure.helpText}
-					required={!!fieldStructure.required}
-					variant="inline"
-					inputVariant="outlined"
-					size="small"
-					format="MM/dd/yyyy"
-					disableToolbar
-					onChange={(date: Date | null) => handleChange(fieldStructure.name, date)}
-					KeyboardButtonProps={{
-						'aria-label': 'change date'
-					}}
-				/>
-			</MuiPickersUtilsProvider>
-		) : fieldStructure.type === 'option' ? (
-			<Autocomplete
+			<DateInput
+				fieldStructure={fieldStructure}
+				value={values[fieldStructure.name]}
+				handleChange={handleChange}
 				key={fieldStructure.name}
-				multiple={!!fieldStructure.multi}
-				options={fieldStructure.options}
-				getOptionLabel={(option: string) => option}
-				onChange={(_event, value) => handleChange(fieldStructure.name, value)}
-				blurOnSelect={!fieldStructure.multi}
-				size="small"
-				filterSelectedOptions
-				clearOnBlur
-				renderInput={params => (
-					<TextField
-						{...params}
-						variant="outlined"
-						size="small"
-						label={fieldStructure.label || fieldStructure.name}
-						helperText={fieldStructure.helpText}
-					/>
-				)}
+			/>
+		) : fieldStructure.type === 'option' ? (
+			<OptionInput
+				fieldStructure={fieldStructure}
+				value={values[fieldStructure.name]}
+				handleChange={handleChange}
+				key={fieldStructure.name}
 			/>
 		) : null;
 	});
@@ -131,17 +81,20 @@ export const FormModal: React.FC<FormModalProps> = ({ name, fieldStructures, ini
 		<section className={styles.scrimming}>
 			<div className={styles.card}>
 				<div className={styles.card_head}>
+					<CloseButton handleClose={handleClose} />
 					<h2>{name}</h2>
 				</div>
 
-				<form onSubmit={handleSubmit} className={styles.form}>
-					<div className={styles.card_content}>{fields}</div>
+				<form onSubmit={submit} className={styles.form}>
+					<ThemeProvider>
+						<div className={styles.card_content}>{inputs}</div>
 
-					<div className={styles.card_actions}>
-						<Button variant="contained" color="primary" type="submit">
-							Save
-						</Button>
-					</div>
+						<div className={styles.card_actions}>
+							<Button variant="contained" color="primary" type="submit">
+								Save
+							</Button>
+						</div>
+					</ThemeProvider>
 				</form>
 			</div>
 		</section>

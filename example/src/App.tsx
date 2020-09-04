@@ -1,27 +1,23 @@
-import { Form } from 'bdc-components';
+import { FormModal } from 'bdc-components';
 import 'bdc-components/dist/index.css';
 import React from 'react';
 
 const App = () => {
 	return (
-		<Form
-			name="Test Form"
+		<FormModal
+			name="Sign Up"
 			fieldStructures={[
-				{ type: 'text', name: 'first name', helpText: 'helper text' },
-				{ type: 'text', name: 'last name' },
-				{ type: 'option', name: 'favorite food', options: [ 'pizza', 'salad' ], multi: true },
-				{ type: 'date', name: 'date of birth' }
+				{ type: 'text', name: 'name' },
+				{ type: 'date', name: 'dob' },
+				{
+					type: 'option',
+					name: 'favorite food',
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
+					multi: true
+				}
 			]}
-			initialValues={{
-				'first name': '',
-				'last name': '',
-				'favorite food': null,
-				'date of birth': null
-			}}
-			onSubmit={(data: { [key: string]: string | string[] | Date | null }) => {
-				Object.keys(data).forEach(key => console.log(`${key}: `, data[key]));
-			}}
-			onClose={() => console.log('close')}
+			handleSubmit={console.log}
+			handleClose={() => console.log('close')}
 		/>
 	);
 };
