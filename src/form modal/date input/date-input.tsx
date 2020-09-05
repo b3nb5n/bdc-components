@@ -13,17 +13,18 @@ export interface DateInputStructure {
 interface DateInputProps {
 	fieldStructure: DateInputStructure;
 	value: Date | null;
+	error?: string;
 	handleChange: (name: string, value: Date | null) => void;
 }
 
-export const DateInput: React.FC<DateInputProps> = ({ fieldStructure, value, handleChange }) => (
+export const DateInput: React.FC<DateInputProps> = ({ fieldStructure, value, error, handleChange }) => (
 	<MuiPickersUtilsProvider utils={DateFnsUtils}>
 		<KeyboardDatePicker
 			name={fieldStructure.name}
 			label={fieldStructure.label || fieldStructure.name}
 			value={value}
-			helperText={fieldStructure.helpText}
-			required={!!fieldStructure.required}
+			helperText={error || fieldStructure.helpText}
+			error={!!error}
 			variant="inline"
 			margin="normal"
 			inputVariant="outlined"

@@ -1,20 +1,24 @@
-import { Button } from '@material-ui/core';
 import React, { useState } from 'react';
-import { ThemeProvider } from '../theme';
-import { CloseButton } from './close button/close-button';
-import { DateInput, DateInputStructure } from './date input/date-input';
 import styles from './form.module.css';
-import { OptionInput, OptionInputStructure } from './option input/option-input';
+import { ThemeProvider } from '../theme';
+import { Button } from '@material-ui/core';
+import { CloseButton } from './close button/close-button';
 import { TextInput, TextInputStructure } from './text input/text-input';
+import { OptionInput, OptionInputStructure } from './option input/option-input';
+import { DateInput, DateInputStructure } from './date input/date-input';
+import { FileInput, FileInputStructure } from './file input/file-input';
+import { initialState } from './initial-state';
+import { validate } from './validate';
 
-type FieldStructure = TextInputStructure | DateInputStructure | OptionInputStructure;
-type FormModalState = { [key: string]: string | string[] | Date | null };
+export type FieldValue = string | string[] | Date | File | null;
+export type FormValues = { [key: string]: FieldValue };
+export type FieldStructure = TextInputStructure | DateInputStructure | OptionInputStructure | FileInputStructure;
 
 interface FormModalProps {
 	name: string;
 	fieldStructures: FieldStructure[];
-	initialValues?: FormModalState;
-	handleSubmit: (values: FormModalState) => void | Promise<void>;
+	initialValues?: FormValues;
+	handleSubmit: (values: FormValues) => void | Promise<void>;
 	handleClose: () => void;
 }
 
@@ -25,28 +29,18 @@ export const FormModal: React.FC<FormModalProps> = ({
 	handleSubmit,
 	handleClose
 }) => {
-	const defaultValue = (field: FieldStructure) => {
-		return field.type === 'text'
-			? ''
-			: field.type === 'option' && !field.multi
-				? null
-				: field.type === 'option' && field.multi ? [] : field.type === 'date' ? null : null;
-	};
-
-	const initialState = {};
-	fieldStructures.forEach(field => {
-		const initialValue = initialValues ? initialValues[field.name] : undefined;
-		initialState[field.name] = initialValue || defaultValue(field);
-	});
-
-	const [ values, setValues ] = useState<any>(initialState);
+	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
+	const [ errors, setErrors ] = useState<{ [key: string]: string }>({});
 
 	const submit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		handleSubmit(values);
+		const validation = validate(fieldStructures, values);
+
+		setErrors(validation.errors);
+		if (validation.valid) handleSubmit(values);
 	};
 
-	const handleChange = (name: string, value: string | string[] | Date | null) => {
+	const handleChange = (name: string, value: FieldValue) => {
 		const newValues = { ...values };
 		newValues[name] = value;
 		setValues(newValues);
@@ -57,6 +51,7 @@ export const FormModal: React.FC<FormModalProps> = ({
 			<TextInput
 				fieldStructure={fieldStructure}
 				value={values[fieldStructure.name]}
+				error={errors[fieldStructure.name]}
 				handleChange={handleChange}
 				key={fieldStructure.name}
 			/>
@@ -64,6 +59,7 @@ export const FormModal: React.FC<FormModalProps> = ({
 			<DateInput
 				fieldStructure={fieldStructure}
 				value={values[fieldStructure.name]}
+				error={errors[fieldStructure.name]}
 				handleChange={handleChange}
 				key={fieldStructure.name}
 			/>
@@ -71,6 +67,15 @@ export const FormModal: React.FC<FormModalProps> = ({
 			<OptionInput
 				fieldStructure={fieldStructure}
 				value={values[fieldStructure.name]}
+				error={errors[fieldStructure.name]}
+				handleChange={handleChange}
+				key={fieldStructure.name}
+			/>
+		) : fieldStructure.type === 'file' ? (
+			<FileInput
+				fieldStructure={fieldStructure}
+				value={values[fieldStructure.name]}
+				error={errors[fieldStructure.name]}
 				handleChange={handleChange}
 				key={fieldStructure.name}
 			/>

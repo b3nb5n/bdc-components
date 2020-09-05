@@ -13,19 +13,20 @@ export interface TextInputStructure {
 interface TextInputProps {
 	fieldStructure: TextInputStructure;
 	value: string;
+	error?: string;
 	handleChange: (name: string, value: string) => void;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({ fieldStructure, value, handleChange }) => (
+export const TextInput: React.FC<TextInputProps> = ({ fieldStructure, value, error, handleChange }) => (
 	<TextField
 		name={fieldStructure.name}
 		label={fieldStructure.label || fieldStructure.name}
-		helperText={fieldStructure.helpText}
+		helperText={error || fieldStructure.helpText}
 		multiline={!!fieldStructure.multiline}
 		value={value}
+		error={!!error}
 		rows={4}
 		rowsMax={12}
-		required={!!fieldStructure.required}
 		onChange={event => handleChange(fieldStructure.name, event.target.value)}
 		size="small"
 		variant="outlined"

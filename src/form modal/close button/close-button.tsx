@@ -11,8 +11,6 @@ export const CloseButton: React.FC<CloseButtonProps> = ({ handleClose }) => (
 		aria-label="close"
 		onClick={handleClose}
 		style={{
-			width: '40px',
-			height: '40px',
 			position: 'absolute',
 			left: '24px',
 			top: '24px'

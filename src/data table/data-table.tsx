@@ -1,10 +1,11 @@
 import React from 'react';
+import styles from './data-table.module.css';
 import { TableItem } from './table item/table-item';
-import styles from './table.module.css';
 
-type Item = { [key: string]: string | string[] | Date | null };
+type ItemValue = string | string[] | Date | null;
+type Item = { [key: string]: ItemValue };
 
-interface TableProps {
+interface DataTableProps {
 	items: Item[];
 	fields: string[];
 	identifyingField?: string;
@@ -13,7 +14,13 @@ interface TableProps {
 	itemClickHandler: string | ((item: Item) => void);
 }
 
-export const Table: React.FC<TableProps> = ({ items, fields, columnTemplate, visibleFields, itemClickHandler }) => {
+export const DataTable: React.FC<DataTableProps> = ({
+	items,
+	fields,
+	columnTemplate,
+	visibleFields,
+	itemClickHandler
+}) => {
 	const tableFields = visibleFields || fields.slice(0, 4);
 	const headLabels = tableFields.map(field => <b key={field + '-head-label'}>{field}</b>);
 	const tableItems = items.map(item => (

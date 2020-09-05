@@ -15,10 +15,11 @@ export interface OptionInputStructure {
 interface OptionInputProps {
 	fieldStructure: OptionInputStructure;
 	value: string | string[] | null;
+	error?: string;
 	handleChange: (name: string, value: string | string[] | null) => void;
 }
 
-export const OptionInput: React.FC<OptionInputProps> = ({ fieldStructure, value, handleChange }) => (
+export const OptionInput: React.FC<OptionInputProps> = ({ fieldStructure, value, error, handleChange }) => (
 	<Autocomplete
 		multiple={!!fieldStructure.multi}
 		options={fieldStructure.options}
@@ -35,8 +36,9 @@ export const OptionInput: React.FC<OptionInputProps> = ({ fieldStructure, value,
 				variant="outlined"
 				margin="normal"
 				size="small"
+				error={!!error}
 				label={fieldStructure.label || fieldStructure.name}
-				helperText={fieldStructure.helpText}
+				helperText={error || fieldStructure.helpText}
 			/>
 		)}
 	/>
