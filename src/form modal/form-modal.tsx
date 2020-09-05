@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './form.module.css';
+import styles from './form-modal.module.css';
 import { ThemeProvider } from '../theme';
 import { Button } from '@material-ui/core';
 import { CloseButton } from './close button/close-button';

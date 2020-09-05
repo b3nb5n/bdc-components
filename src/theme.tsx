@@ -12,6 +12,9 @@ export const theme = createMuiTheme({
 			fontWeight: 800,
 			textTransform: 'capitalize'
 		}
+	},
+	shape: {
+		borderRadius: 0
 	}
 });
 

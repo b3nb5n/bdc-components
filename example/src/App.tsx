@@ -12,9 +12,15 @@ const App = () => {
 				{
 					type: 'option',
 					name: 'favorite food',
-					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
+					multi: true
 				},
-				{ type: 'file', name: 'headshot', required: true, helpText: 'is this helpful?' },
+				{
+					type: 'file',
+					name: 'headshot',
+					required: true,
+					helpText: 'is this helpful?'
+				},
 				{ type: 'text', name: 'bio', multiline: true }
 			]}
 			handleSubmit={console.log}

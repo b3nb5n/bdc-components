@@ -8,6 +8,7 @@ export interface FileInputStructure {
 	label?: string;
 	helpText?: string;
 	required?: boolean;
+	fileTypes?: string[];
 }
 
 interface FileInputProps {
@@ -18,7 +19,7 @@ interface FileInputProps {
 }
 
 export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, value, error, handleChange }) => {
-	const previewImage = (image?: string | File | null) => {
+	const previewFile = (image?: string | File | null) => {
 		const reader = new FileReader()
 		const imagePreview = document.querySelector(`#${fieldStructure.name}-preview`)! as HTMLImageElement
 
@@ -26,20 +27,34 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, value, err
 			imagePreview.src = typeof e.target?.result === 'string' ? e.target?.result : ''
 		}
 
-		if (image && typeof image !== 'string') reader.readAsDataURL(image)
+		const filePreviews = {
+			audio: 'https://baldwindesign.co/images/audio-preview.png',
+			file: 'https://baldwindesign.co/images/file-preview.png'
+		}
+
+		if (image && typeof image !== 'string') {
+			if (image.type.includes('image')) {
+				reader.readAsDataURL(image)
+			} else if (image.type.includes('audio')) {
+				imagePreview.src = filePreviews.audio
+			} else {
+				imagePreview.src = filePreviews.file
+			}
+		}
 		if (typeof image === 'string') imagePreview.src = image
 	}
 
-	useEffect(() => previewImage(value), [])
+	useEffect(() => previewFile(value), [])
 
 	return (
 		<div>
 			<input
 				id={fieldStructure.name + '-input'}
 				type="file"
+				accept={fieldStructure.fileTypes ? fieldStructure.fileTypes.join() : undefined}
 				onChange={e => {
 					handleChange(fieldStructure.name, e.target.files ? e.target.files[0] : null)
-					previewImage(e.target.files ? e.target.files[0] : null)
+					previewFile(e.target.files ? e.target.files[0] : null)
 				}}
 				style={{ display: 'none' }}
 				onFocus={() => console.log('focus')}
