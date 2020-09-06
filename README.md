@@ -16,7 +16,6 @@ npm install --save bdc-components
 import React, { Component } from 'react'
 
 import MyComponent from 'bdc-components'
-import 'bdc-components/dist/index.css'
 
 class Example extends Component {
   render() {
