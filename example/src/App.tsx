@@ -1,5 +1,4 @@
 import { FormModal } from 'bdc-components';
-import 'bdc-components/dist/index.css';
 import React from 'react';
 
 const App = () => {
@@ -18,8 +17,8 @@ const App = () => {
 				{
 					type: 'file',
 					name: 'headshot',
-					required: true,
-					helpText: 'is this helpful?'
+					helpText: 'is this helpful?',
+					required: true
 				},
 				{ type: 'text', name: 'bio', multiline: true }
 			]}

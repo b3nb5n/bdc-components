@@ -1,10 +1,11 @@
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
+import { root } from './styles';
 
 export const theme = createMuiTheme({
 	palette: {
 		primary: {
-			main: '#496dc2'
+			main: root.primary
 		}
 	},
 	typography: {

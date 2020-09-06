@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
-import styles from './file-input.module.css';
+import React from 'react';
+import { styles } from './styles'
+import { global } from '../../styles'
 import UploadIcon from '@material-ui/icons/Backup';
 
 export interface FileInputStructure {
@@ -44,32 +45,50 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, value, err
 		if (typeof image === 'string') imagePreview.src = image
 	}
 
-	useEffect(() => previewFile(value), [])
+	const handleHover = (hover: boolean) => {
+		const inputLabel = document.querySelector(`#${fieldStructure.name}-label`)! as HTMLLabelElement
+		const borderColor = hover ? '#212121' : styles.file_upload.borderColor!
+		inputLabel.style.borderColor = errorStyle?.borderColor || borderColor
+	}
+
+	const errorStyle = error ? styles.error : null
 
 	return (
-		<div>
+		<div style={global}>
 			<input
-				id={fieldStructure.name + '-input'}
 				type="file"
-				accept={fieldStructure.fileTypes ? fieldStructure.fileTypes.join() : undefined}
+				id={fieldStructure.name + '-input'}
+				accept={fieldStructure.fileTypes?.join()}
+				style={{ ...global, display: 'none' }}
 				onChange={e => {
 					handleChange(fieldStructure.name, e.target.files ? e.target.files[0] : null)
 					previewFile(e.target.files ? e.target.files[0] : null)
 				}}
-				style={{ display: 'none' }}
-				onFocus={() => console.log('focus')}
 			/>
-			<label htmlFor={fieldStructure.name + '-input'}>
-				<div className={styles.file_upload} style={error ? { borderColor: '#f44336' } : {}}>
-					<div className={`${styles.upload_overlay} MuiFormLabel-root ${error ? 'Mui-error' : null}`}>
-						<UploadIcon />
-						<label>{fieldStructure.name}</label>
-					</div>
-					<img id={`${fieldStructure.name}-preview`} className={styles.image_preview} src={typeof value === 'string' ? value : undefined} />
+
+			<label
+				id={fieldStructure.name + '-label'}
+				htmlFor={fieldStructure.name + '-input'}
+				style={{ ...styles.file_upload, ...global, ...errorStyle }}
+				onMouseEnter={() => handleHover(true)}
+				onMouseLeave={() => handleHover(false)}
+			>
+				<div style={{ ...global, ...styles.upload_overlay, ...errorStyle }}>
+					<UploadIcon />
+					<label style={global}>{fieldStructure.name}</label>
 				</div>
+
+				<img
+					id={`${fieldStructure.name}-preview`}
+					src={typeof value === 'string' ? value : undefined}
+					style={{ ...global, ...styles.image_preview }}
+				/>
 			</label>
+
 			{fieldStructure.helpText || error ? (
-				<p className={`MuiFormHelperText-root MuiFormHelperText-contained ${error ? 'Mui-error' : null} MuiFormHelperText-marginDense`}>{error || fieldStructure.helpText}</p>
+				<p style={{ ...styles.help_text, ...errorStyle }}>
+					{error || fieldStructure.helpText}
+				</p>
 			) : null}
 		</div>
 	);

@@ -12,6 +12,8 @@ interface DataTableProps {
 	columnTemplate?: string;
 	visibleFields?: string[];
 	itemClickHandler: string | ((item: Item) => void);
+	filter: (items: Item[]) => Item[];
+	sort: (items: Item[]) => Item[];
 }
 
 export const DataTable: React.FC<DataTableProps> = ({

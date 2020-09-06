@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import styles from './form-modal.module.css';
+import { formModalStyles } from './styles';
+import { global, styles } from '../styles';
 import { ThemeProvider } from '../theme';
 import { Button } from '@material-ui/core';
 import { CloseButton } from './close button/close-button';
@@ -83,18 +84,18 @@ export const FormModal: React.FC<FormModalProps> = ({
 	});
 
 	return (
-		<section className={styles.scrimming}>
-			<div className={styles.card}>
-				<div className={styles.card_head}>
+		<section style={{ ...global, ...formModalStyles.scrimming }}>
+			<div style={{ ...global, ...formModalStyles.card }}>
+				<div style={{ ...global, ...formModalStyles.card_head }}>
 					<CloseButton handleClose={handleClose} />
-					<h2>{name}</h2>
+					<h2 style={{ ...global, ...styles.h2 }}>{name}</h2>
 				</div>
 
-				<form onSubmit={submit} className={styles.form}>
+				<form onSubmit={submit} style={{ ...global, ...formModalStyles.form }}>
 					<ThemeProvider>
-						<div className={styles.card_content}>{inputs}</div>
+						<div style={{ ...global, ...formModalStyles.card_content }}>{inputs}</div>
 
-						<div className={styles.card_actions}>
+						<div style={{ ...global, ...formModalStyles.card_actions }}>
 							<Button variant="contained" color="primary" type="submit">
 								Save
 							</Button>
