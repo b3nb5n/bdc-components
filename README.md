@@ -13,15 +13,39 @@ npm install --save bdc-components
 ## Usage
 
 ```tsx
-import React, { Component } from 'react'
+import React from 'react'
+import { FormModal } from 'bdc-components'
 
-import MyComponent from 'bdc-components'
-
-class Example extends Component {
-  render() {
-    return <MyComponent />
-  }
-}
+const App = () => {
+	return (
+		<FormModal
+			name="Sign Up"
+			fieldStructures={[
+				{ type: 'text', name: 'name', helpText: 'is this helpful', required: true },
+				{ type: 'date', name: 'dob' },
+				{
+					type: 'option',
+					name: 'favorite food',
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
+					multi: true
+				},
+				{
+					type: 'file',
+					name: 'headshot',
+					helpText: 'is this helpful',
+					required: true
+				},
+				{ type: 'text', name: 'bio', multiline: true }
+            ]}
+            initialValues={{
+                dob: new Date(),
+                headshot: 'https://www.example.com/assets/initialimage.jpg'
+            }}
+			handleSubmit={console.log}
+			handleClose={() => console.log('close')}
+		/>
+	);
+};
 ```
 
 ## License
