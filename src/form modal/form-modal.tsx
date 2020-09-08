@@ -30,8 +30,12 @@ export type FieldStructures = {
 
 export type FieldValue <T extends FieldStructure = FieldStructure> =
 	T extends TextFieldStructure ? string
+	: T extends DateFieldStructure & { required: true } ? Date
 	: T extends DateFieldStructure ? Date | null
-	: T extends OptionFieldStructure ? string | string[] | null
+	: T extends OptionFieldStructure & { multi: true } ? string[]
+	: T extends OptionFieldStructure & { required: true } ? string
+	: T extends OptionFieldStructure ? string | null
+	: T extends FileFieldStructure & { required: true } ? string | File
 	: T extends FileFieldStructure ? string | File | null
 	: string | string[] | Date | File | null
 

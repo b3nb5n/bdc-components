@@ -9,35 +9,41 @@ export interface OptionFieldStructure extends Field {
 	multi?: boolean;
 }
 
-interface OptionInputProps {
-	fieldStructure: OptionFieldStructure;
+type InputValue = string | string[] | null;
+
+interface OptionInputProps<T extends OptionFieldStructure> {
+	fieldStructure: T;
 	name: string;
-	value: string | string[] | null;
+	value: InputValue;
 	error?: string;
-	handleChange: (name: string, value: string | string[] | null) => void;
+	handleChange: (name: string, value: any) => void;
 }
 
-export const OptionInput: React.FC<OptionInputProps> = ({ fieldStructure, name, value, error, handleChange }) => (
-	<Autocomplete
-		multiple={!!fieldStructure.multi}
-		options={fieldStructure.options}
-		value={value}
-		getOptionLabel={(option: string) => option}
-		onChange={(_event, value) => handleChange(name, value)}
-		blurOnSelect={!fieldStructure.multi}
-		size="small"
-		filterSelectedOptions
-		clearOnBlur
-		renderInput={params => (
-			<TextField
-				{...params}
-				variant="outlined"
-				margin="normal"
-				size="small"
-				error={!!error}
-				label={fieldStructure.label || name}
-				helperText={error || fieldStructure.helpText}
-			/>
-		)}
-	/>
-);
+export const OptionInput = <T extends OptionFieldStructure>(props: OptionInputProps<T>) => {
+	const { fieldStructure, name, value, error, handleChange } = props;
+
+	return (
+		<Autocomplete
+			multiple={!!fieldStructure.multi}
+			options={fieldStructure.options}
+			value={value}
+			getOptionLabel={(option: string) => option}
+			onChange={(_event, value) => handleChange(name, value)}
+			blurOnSelect={!fieldStructure.multi}
+			size="small"
+			filterSelectedOptions
+			clearOnBlur
+			renderInput={params => (
+				<TextField
+					{...params}
+					variant="outlined"
+					margin="normal"
+					size="small"
+					error={!!error}
+					label={fieldStructure.label || name}
+					helperText={error || fieldStructure.helpText}
+				/>
+			)}
+		/>
+	);
+};

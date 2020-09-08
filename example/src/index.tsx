@@ -11,17 +11,15 @@ const App = () => {
 				dob: { type: 'date' },
 				'favorite food': {
 					type: 'option',
-					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
-					multi: true
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
 				},
 				headshot: { type: 'file', helpText: 'is this helpful?' },
 				bio: { type: 'text', multiline: true }
 			}}
 			initialValues={{
-				name: 'Ben Baldwin',
-				h: ''
+				name: 'Ben Baldwin'
 			}}
-			handleSubmit={values => {}}
+			handleSubmit={console.log}
 			handleClose={() => console.log('close')}
 		/>
 	);
