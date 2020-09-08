@@ -17,7 +17,7 @@ export const formModalStyles: { [key: string]: CSSProperties } = {
 		backdropFilter: 'blur(2px)'
 	},
 	card: {
-		width: '33vw',
+		width: '50vw',
 		maxWidth: '480px',
 		minWidth: '360px',
 		maxHeight: 'calc(100vh - 120px)',

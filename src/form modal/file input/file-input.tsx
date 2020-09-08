@@ -73,7 +73,7 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 			>
 				<div style={{ ...global, ...styles.upload_overlay, ...errorStyle }}>
 					<UploadIcon />
-					<label style={global}>{name}</label>
+					<label style={global}>{fieldStructure.label || name}</label>
 				</div>
 
 				<img
