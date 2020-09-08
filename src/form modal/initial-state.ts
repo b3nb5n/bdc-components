@@ -1,6 +1,6 @@
-import { FormConfig, FormValues, FieldStructure, FieldValue } from './form-modal';
+import { FieldStructures, InitialValues, FieldStructure, FieldValue } from './form-modal';
 
-export const initialState = (fieldStructures: FormConfig, initialValues?: FormValues) => {
+export const initialState = <T extends FieldStructures>(fieldStructures: T, initialValues?: InitialValues<T>) => {
 	const initialState: { [key: string]: FieldValue } = {};
 	const fields = Object.keys(fieldStructures);
 

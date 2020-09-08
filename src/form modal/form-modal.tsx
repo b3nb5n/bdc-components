@@ -24,6 +24,10 @@ export type FieldStructure =
 	| DateFieldStructure
 	| FileFieldStructure
 
+export type FieldStructures = {
+	[key: string]: FieldStructure
+}
+
 export type FieldValue <T extends FieldStructure = FieldStructure> =
 	T extends TextFieldStructure ? string
 	: T extends DateFieldStructure ? Date | null
@@ -31,27 +35,25 @@ export type FieldValue <T extends FieldStructure = FieldStructure> =
 	: T extends FileFieldStructure ? string | File | null
 	: string | string[] | Date | File | null
 
-export type FormConfig = { [key: string]: FieldStructure }
-
-export type FormValues <T extends FormConfig> = {
+export type FormValues <T extends FieldStructures> = {
 	[k in keyof T]: FieldValue<T[k]>
 }
 
-interface FormModalProps <T extends FormConfig> {
+export type InitialValues <T extends FieldStructures> = {
+	[k in keyof T]?: FieldValue<T[k]>
+}
+
+interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
-	initialValues?: FormValues<T>;
+	initialValues?: InitialValues<T>;
 	handleSubmit: (values: FormValues<T>) => void | Promise<void>;
 	handleClose: () => void;
 }
 
-export const FormModal = <T extends FormConfig, > ({
-	name,
-	fieldStructures,
-	initialValues,
-	handleSubmit,
-	handleClose
-}: FormModalProps<T>) => {
+export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) => {
+	const { name, fieldStructures, initialValues, handleSubmit, handleClose } = props
+
 	const fields = Object.keys(fieldStructures)
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
 	const [ errors, setErrors ] = useState<{ [key: string]: string }>({});

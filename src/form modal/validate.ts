@@ -1,6 +1,6 @@
-import { FormConfig, FormValues } from './form-modal';
+import { FieldStructures, FormValues } from './form-modal';
 
-export const validate = (fieldStructures: FormConfig, values: FormValues) => {
+export const validate = <T extends FieldStructures>(fieldStructures: T, values: FormValues<T>) => {
 	const errors: { [key: string]: string } = {};
 
 	const fields = Object.keys(fieldStructures);

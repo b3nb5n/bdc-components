@@ -17,7 +17,11 @@ const App = () => {
 				headshot: { type: 'file', helpText: 'is this helpful?' },
 				bio: { type: 'text', multiline: true }
 			}}
-			handleSubmit={console.log}
+			initialValues={{
+				name: 'Ben Baldwin',
+				h: ''
+			}}
+			handleSubmit={values => {}}
 			handleClose={() => console.log('close')}
 		/>
 	);
