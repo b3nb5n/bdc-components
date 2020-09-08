@@ -1,2 +1,2 @@
 export { DataTable } from './data table/data-table';
-export { FormModal } from './form modal/form-modal';
+export * from './form modal/form-modal';

@@ -1,11 +1,13 @@
-import { FormValues, FieldStructure } from './form-modal';
+import { FormConfig, FormValues } from './form-modal';
 
-export const validate = (fieldStructures: FieldStructure[], values: FormValues) => {
+export const validate = (fieldStructures: FormConfig, values: FormValues) => {
 	const errors: { [key: string]: string } = {};
-	const requiredFields = fieldStructures.filter(field => field.required);
+
+	const fields = Object.keys(fieldStructures);
+	const requiredFields = fields.filter(field => fieldStructures[field].required);
 
 	requiredFields.forEach(field => {
-		if (!values[field.name]) errors[field.name] = 'This field is required.';
+		if (!values[field]) errors[field] = 'This field is required.';
 	});
 
 	return {

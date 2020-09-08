@@ -6,23 +6,17 @@ const App = () => {
 	return (
 		<FormModal
 			name="Sign Up"
-			fieldStructures={[
-				{ type: 'text', name: 'name', helpText: 'is this helpful', required: true },
-				{ type: 'date', name: 'dob' },
-				{
+			fieldStructures={{
+				name: { type: 'text', helpText: 'is this helpful' },
+				dob: { type: 'date' },
+				'favorite food': {
 					type: 'option',
-					name: 'favorite food',
 					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
 					multi: true
 				},
-				{
-					type: 'file',
-					name: 'headshot',
-					helpText: 'is this helpful?',
-					required: true
-				},
-				{ type: 'text', name: 'bio', multiline: true }
-			]}
+				headshot: { type: 'file', helpText: 'is this helpful?' },
+				bio: { type: 'text', multiline: true }
+			}}
 			handleSubmit={console.log}
 			handleClose={() => console.log('close')}
 		/>
