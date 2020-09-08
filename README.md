@@ -20,27 +20,16 @@ const App = () => {
 	return (
 		<FormModal
 			name="Sign Up"
-			fieldStructures={[
-				{ type: 'text', name: 'name', helpText: 'is this helpful', required: true },
-				{ type: 'date', name: 'dob' },
-				{
+			fieldStructures={{
+				name: { type: 'text' },
+				dob: { type: 'date' },
+				food: {
 					type: 'option',
-					name: 'favorite food',
-					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
-					multi: true
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
 				},
-				{
-					type: 'file',
-					name: 'headshot',
-					helpText: 'is this helpful',
-					required: true
-				},
-				{ type: 'text', name: 'bio', multiline: true }
-            ]}
-            initialValues={{
-                dob: new Date(),
-                headshot: 'https://www.example.com/assets/initialimage.jpg'
-            }}
+				headshot: { type: 'file' },
+				bio: { type: 'text', multiline: true }
+			}}
 			handleSubmit={console.log}
 			handleClose={() => console.log('close')}
 		/>
