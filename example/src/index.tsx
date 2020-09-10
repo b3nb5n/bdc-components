@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, ThemeProvider } from 'bdc-components';
+import { FormModal, ThemeProvider, PageHeader } from 'bdc-components';
 import 'bdc-components/dist/index.css';
 
 const App = () => {
@@ -26,9 +26,13 @@ const App = () => {
 		/>
 	);
 
+	const Header = () => (
+		<PageHeader title="Page Header" actions={[ { name: 'login', label: 'Login', action: openModal } ]} />
+	);
+
 	return (
 		<ThemeProvider>
-			<button onClick={openModal}>Open Form</button>
+			<Header />
 			{modalOpen && <Modal />}
 		</ThemeProvider>
 	);

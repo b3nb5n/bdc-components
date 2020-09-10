@@ -45,7 +45,7 @@ export type InitialValues <T extends FieldStructures> = {
 	[k in keyof T]?: FieldValue<T[k]>
 }
 
-export interface Action <T extends FormValues> {
+export interface FormAction <T extends FormValues> {
 	name: string
 	label: string | ReactElement
 	validate?: boolean
@@ -56,7 +56,7 @@ interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
 	initialValues?: InitialValues<T>;
-	actions: Action<FormValues<T>>[]
+	actions: FormAction<FormValues<T>>[]
 	handleClose: () => void;
 }
 
