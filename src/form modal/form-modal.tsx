@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button } from '@material-ui/core';
+import React, { useState, ReactElement } from 'react';
+import { Button } from '../button/button';
 import { CloseButton } from './close button/close-button';
 import classes from './form-modal.module.css'
 import { TextInput, TextFieldStructure } from './text input/text-input';
@@ -37,7 +37,7 @@ export type FieldValue <T extends FieldStructure = FieldStructure> =
 	: T extends FileFieldStructure ? string | File | null
 	: string | string[] | Date | File | null
 
-export type FormValues <T extends FieldStructures> = {
+export type FormValues <T extends FieldStructures = FieldStructures> = {
 	[k in keyof T]: FieldValue<T[k]>
 }
 
@@ -45,28 +45,27 @@ export type InitialValues <T extends FieldStructures> = {
 	[k in keyof T]?: FieldValue<T[k]>
 }
 
+export interface Action <T extends FormValues> {
+	name: string
+	label: string | ReactElement
+	validate?: boolean
+	action: (values: T) => void | Promise<void>
+}
+
 interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
 	initialValues?: InitialValues<T>;
-	handleSubmit: (values: FormValues<T>) => void | Promise<void>;
+	actions: Action<FormValues<T>>[]
 	handleClose: () => void;
 }
 
 export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) => {
-	const { name, fieldStructures, initialValues, handleSubmit, handleClose } = props
+	const { name, fieldStructures, initialValues, actions, handleClose } = props
 
 	const fields = Object.keys(fieldStructures)
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
 	const [ errors, setErrors ] = useState<{ [key: string]: string }>({});
-
-	const submit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		const validation = validate(fieldStructures, values);
-
-		setErrors(validation.errors);
-		if (validation.valid) handleSubmit(values);
-	};
 
 	const handleChange = (name: string, value: FieldValue) => {
 		const newValues = { ...values };
@@ -116,6 +115,25 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 		) : null;
 	});
 
+	const actionButtons = actions.map(action => {
+		const handleClick = () => {
+			if (action.validate) {
+				const validation = validate(fieldStructures, values);
+
+				setErrors(validation.errors);
+				if (validation.valid) action.action(values);
+			} else {
+				action.action(values)
+			}
+		}
+
+		return (
+			<Button action={handleClick} key={action.name} aria-label={action.name}>
+				{action.label}
+			</Button>
+		)
+	})
+
 	return (
 		<section className={classes.scrimming}>
 			<div className={classes.card}>
@@ -124,15 +142,13 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 					<h2>{name}</h2>
 				</div>
 
-				<form onSubmit={submit} className={classes.form}>
+				<form className={classes.form}>
 					<div className={classes.card_content}>{inputs}</div>
-
-					<div className={classes.card_actions}>
-						<Button variant="contained" color="primary" type="submit">
-							Save
-						</Button>
-					</div>
 				</form>
+
+				<div className={classes.card_actions}>
+					{actionButtons}
+				</div>
 			</div>
 		</section>
 	);

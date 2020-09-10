@@ -1,35 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, PageHeader, ThemeProvider } from 'bdc-components';
+import { FormModal, ThemeProvider } from 'bdc-components';
 import 'bdc-components/dist/index.css';
 
-const ExampleForm = () => (
-	<FormModal
-		name="Sign Up"
-		fieldStructures={{
-			name: { type: 'text' },
-			dob: { type: 'date' },
-			food: {
-				type: 'option',
-				options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
-			},
-			headshot: { type: 'file', required: true },
-			bio: { type: 'text', multiline: true }
-		}}
-		handleSubmit={console.log}
-		handleClose={() => console.log('close')}
-	/>
-);
+const App = () => {
+	const [ modalOpen, setModalOpen ] = useState(false);
+	const openModal = () => setModalOpen(true);
+	const closeModal = () => setModalOpen(false);
 
-const App = () => (
-	<ThemeProvider>
-		<PageHeader
-			title="Page Header"
-			action={() => console.log('run action')}
-			search={(searchTerm: string) => console.log(`search: ${searchTerm}`)}
+	const Modal = () => (
+		<FormModal
+			name="Sign Up"
+			fieldStructures={{
+				name: { type: 'text' },
+				dob: { type: 'date' },
+				food: {
+					type: 'option',
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
+				},
+				headshot: { type: 'file' },
+				bio: { type: 'text', multiline: true }
+			}}
+			actions={[ { name: 'save', label: 'Save', action: console.log } ]}
+			handleClose={closeModal}
 		/>
-		<ExampleForm />
-	</ThemeProvider>
-);
+	);
+
+	return (
+		<ThemeProvider>
+			<button onClick={openModal}>Open Form</button>
+			{modalOpen && <Modal />}
+		</ThemeProvider>
+	);
+};
 
 ReactDOM.render(<App />, document.getElementById('root'));
