@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import { CloseButton } from './close button/close-button';
-import { ThemeProvider } from '../theme';
-import { formModalStyles } from './styles';
-import { global, styles } from '../styles';
+import classes from '../index.module.css'
 import { TextInput, TextFieldStructure } from './text input/text-input';
 import { OptionInput, OptionFieldStructure } from './option input/option-input';
 import { DateInput, DateFieldStructure } from './date input/date-input';
@@ -119,23 +117,21 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 	});
 
 	return (
-		<section style={{ ...global, ...formModalStyles.scrimming }}>
-			<div style={{ ...global, ...formModalStyles.card }}>
-				<div style={{ ...global, ...formModalStyles.card_head }}>
+		<section className={classes.scrimming}>
+			<div className={classes.card}>
+				<div className={classes.card_head}>
 					<CloseButton handleClose={handleClose} />
-					<h2 style={{ ...global, ...styles.h2 }}>{name}</h2>
+					<h2>{name}</h2>
 				</div>
 
-				<form onSubmit={submit} style={{ ...global, ...formModalStyles.form }}>
-					<ThemeProvider>
-						<div style={{ ...global, ...formModalStyles.card_content }}>{inputs}</div>
+				<form onSubmit={submit} className={classes.form}>
+					<div className={classes.card_content}>{inputs}</div>
 
-						<div style={{ ...global, ...formModalStyles.card_actions }}>
-							<Button variant="contained" color="primary" type="submit">
-								Save
-							</Button>
-						</div>
-					</ThemeProvider>
+					<div className={classes.card_actions}>
+						<Button variant="contained" color="primary" type="submit">
+							Save
+						</Button>
+					</div>
 				</form>
 			</div>
 		</section>

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field } from '../form-modal'
-import { styles } from './styles'
-import { global } from '../../styles'
+import classes from '../../index.module.css'
 import UploadIcon from '@material-ui/icons/Backup';
+import { useTheme } from '@material-ui/core/styles'
 
 export interface FileFieldStructure extends Field {
 	type: 'file';
@@ -18,6 +18,13 @@ interface FileInputProps {
 }
 
 export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, value, error, handleChange }) => {
+	const theme = useTheme()
+	const errorColor = theme.palette.error.main
+	const errorStyle = error ? {
+		color: errorColor,
+		borderColor: errorColor
+	} : undefined
+
 	const previewFile = (image?: string | File | null) => {
 		const reader = new FileReader()
 		const imagePreview = document.querySelector(`#${name}-preview`)! as HTMLImageElement
@@ -45,19 +52,17 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 
 	const handleHover = (hover: boolean) => {
 		const inputLabel = document.querySelector(`#${name}-label`)! as HTMLLabelElement
-		const borderColor = hover ? '#212121' : styles.file_upload.borderColor!
-		inputLabel.style.borderColor = errorStyle?.borderColor || borderColor
+		const borderColor = hover ? '#212121' : '#ccc'
+		inputLabel.style.borderColor = error ? errorColor : borderColor
 	}
 
-	const errorStyle = error ? styles.error : null
-
 	return (
-		<div style={global}>
+		<div>
 			<input
 				type="file"
 				id={name + '-input'}
 				accept={fieldStructure.fileTypes?.join()}
-				style={{ ...global, display: 'none' }}
+				style={{ display: 'none' }}
 				onChange={e => {
 					handleChange(name, e.target.files ? e.target.files[0] : null)
 					previewFile(e.target.files ? e.target.files[0] : null)
@@ -67,24 +72,25 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 			<label
 				id={name + '-label'}
 				htmlFor={name + '-input'}
-				style={{ ...styles.file_upload, ...global, ...errorStyle }}
+				className={classes.file_upload}
+				style={errorStyle}
 				onMouseEnter={() => handleHover(true)}
 				onMouseLeave={() => handleHover(false)}
 			>
-				<div style={{ ...global, ...styles.upload_overlay, ...errorStyle }}>
+				<div className={classes.upload_overlay} style={errorStyle}>
 					<UploadIcon />
-					<label style={global}>{fieldStructure.label || name}</label>
+					<label>{fieldStructure.label || name}</label>
 				</div>
 
 				<img
 					id={`${name}-preview`}
 					src={typeof value === 'string' ? value : undefined}
-					style={{ ...global, ...styles.image_preview }}
+					className={classes.image_preview}
 				/>
 			</label>
 
 			{fieldStructure.helpText || error ? (
-				<p style={{ ...styles.help_text, ...errorStyle }}>
+				<p className={classes.help_text} style={errorStyle}>
 					{error || fieldStructure.helpText}
 				</p>
 			) : null}
