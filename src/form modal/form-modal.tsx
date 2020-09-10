@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@material-ui/core';
 import { CloseButton } from './close button/close-button';
-import classes from '../index.module.css'
+import classes from './form-modal.module.css'
 import { TextInput, TextFieldStructure } from './text input/text-input';
 import { OptionInput, OptionFieldStructure } from './option input/option-input';
 import { DateInput, DateFieldStructure } from './date input/date-input';

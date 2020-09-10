@@ -1,6 +1,6 @@
 import React from 'react';
 import { Field } from '../form-modal'
-import classes from '../../index.module.css'
+import classes from './file-input.module.css'
 import UploadIcon from '@material-ui/icons/Backup';
 import { useTheme } from '@material-ui/core/styles'
 
