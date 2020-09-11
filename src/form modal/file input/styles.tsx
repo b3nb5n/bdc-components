@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const useStyles = makeStyles({
+export const useStyles = makeStyles(theme => ({
 	file_upload: {
 		margin: '16px 0 8px',
 		borderWidth: '1px',
@@ -13,7 +13,10 @@ export const useStyles = makeStyles({
 		overflow: 'hidden',
 		display: 'flex',
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		'&:hover': {
+			borderColor: '#212121'
+		}
 	},
 	upload_overlay: {
 		position: 'absolute',
@@ -25,7 +28,7 @@ export const useStyles = makeStyles({
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: 'rgba(0, 0, 0, 054)',
+		color: 'rgba(0, 0, 0, 0.54)',
 		fontWeight: 400,
 		textAlign: 'center',
 		fontSize: '1rem',
@@ -38,8 +41,15 @@ export const useStyles = makeStyles({
 	},
 	help_text: {
 		margin: '4px 14px 0',
-		fontSize: '075rem',
-		lineHeight: 166,
+		fontSize: '0.75rem',
+		lineHeight: 1.66,
 		color: 'rgba(0, 0, 0, 054)'
+	},
+	error: {
+		color: theme.palette.error.main,
+		borderColor: theme.palette.error.main,
+		'&:hover': {
+			borderColor: theme.palette.error.main
+		}
 	}
-});
+}));

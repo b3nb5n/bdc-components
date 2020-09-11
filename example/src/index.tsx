@@ -11,14 +11,15 @@ const App = () => {
 		<FormModal
 			name="Sign Up"
 			fieldStructures={{
-				name: { type: 'text' },
-				dob: { type: 'date' },
+				name: { type: 'text', required: true },
+				dob: { type: 'date', required: true },
 				food: {
 					type: 'option',
-					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
+					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ],
+					required: true
 				},
-				headshot: { type: 'file' },
-				bio: { type: 'text', multiline: true }
+				headshot: { type: 'file', required: true },
+				bio: { type: 'text', multiline: true, required: true }
 			}}
 			onSubmit={values => {
 				console.log(values);

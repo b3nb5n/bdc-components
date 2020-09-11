@@ -1,7 +1,6 @@
 import React from 'react';
 import { Field } from '../form-modal'
 import UploadIcon from '@material-ui/icons/Backup';
-import { useTheme } from '@material-ui/core/styles'
 import { useStyles } from './styles'
 
 export interface FileFieldStructure extends Field {
@@ -19,12 +18,6 @@ interface FileInputProps {
 
 export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, value, error, handleChange }) => {
 	const classes = useStyles()
-	const theme = useTheme()
-	const errorColor = theme.palette.error.main
-	const errorStyle = error ? {
-		color: errorColor,
-		borderColor: errorColor
-	} : undefined
 
 	const previewFile = (image?: string | File | null) => {
 		const reader = new FileReader()
@@ -51,12 +44,6 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 		if (typeof image === 'string') imagePreview.src = image
 	}
 
-	const handleHover = (hover: boolean) => {
-		const inputLabel = document.querySelector(`#${name}-label`)! as HTMLLabelElement
-		const borderColor = hover ? '#212121' : '#ccc'
-		inputLabel.style.borderColor = error ? errorColor : borderColor
-	}
-
 	return (
 		<div>
 			<input
@@ -73,12 +60,9 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 			<label
 				id={name + '-label'}
 				htmlFor={name + '-input'}
-				className={classes.file_upload}
-				style={errorStyle}
-				onMouseEnter={() => handleHover(true)}
-				onMouseLeave={() => handleHover(false)}
+				className={`${classes.file_upload} ${error && classes.error}`}
 			>
-				<div className={classes.upload_overlay} style={errorStyle}>
+				<div className={`${classes.upload_overlay} ${error && classes.error}`}>
 					<UploadIcon />
 					<label>{fieldStructure.label || name}</label>
 				</div>
@@ -91,7 +75,7 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 			</label>
 
 			{fieldStructure.helpText || error ? (
-				<p className={classes.help_text} style={errorStyle}>
+				<p className={`${classes.help_text} ${error && classes.error}`}>
 					{error || fieldStructure.helpText}
 				</p>
 			) : null}
