@@ -11,7 +11,18 @@ export const ThemeProvider: React.FC = ({ children }) => (
 			},
 			typography: {
 				fontFamily: 'din-2014, "Helvetica Neue"',
+				h1: {
+					fontSize: '56px',
+					fontWeight: 800,
+					textTransform: 'capitalize'
+				},
+				h2: {
+					fontSize: '36px',
+					fontWeight: 800,
+					textTransform: 'capitalize'
+				},
 				button: {
+					fontSize: '18px',
 					fontWeight: 800,
 					textTransform: 'capitalize'
 				}

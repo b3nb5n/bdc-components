@@ -1,6 +1,6 @@
 {
 	"name": "bdc-components",
-	"version": "0.2.1",
+	"version": "0.2.4",
 	"description": "React components for visualizing and collecting data.",
 	"author": "baldwin-design-co",
 	"license": "MIT",
@@ -14,14 +14,11 @@
 	"scripts": {
 		"build": "microbundle-crl --no-compress --format modern,cjs",
 		"start": "microbundle-crl watch --no-compress --format modern,cjs",
-		"prepare": "run-s build",
 		"test": "run-s test:unit test:lint test:build",
 		"test:build": "run-s build",
 		"test:lint": "eslint .",
 		"test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-		"test:watch": "react-scripts test --env=jsdom",
-		"predeploy": "cd example && npm install && npm run build",
-		"deploy": "gh-pages -d example/build"
+		"test:watch": "react-scripts test --env=jsdom"
 	},
 	"peerDependencies": {
 		"react": "^16.0.0"

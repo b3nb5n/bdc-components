@@ -1,8 +1,8 @@
 import React from 'react';
 import { Field } from '../form-modal'
-import classes from './file-input.module.css'
 import UploadIcon from '@material-ui/icons/Backup';
 import { useTheme } from '@material-ui/core/styles'
+import { useStyles } from './styles'
 
 export interface FileFieldStructure extends Field {
 	type: 'file';
@@ -18,6 +18,7 @@ interface FileInputProps {
 }
 
 export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, value, error, handleChange }) => {
+	const classes = useStyles()
 	const theme = useTheme()
 	const errorColor = theme.palette.error.main
 	const errorStyle = error ? {

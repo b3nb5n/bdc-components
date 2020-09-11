@@ -1,13 +1,14 @@
-import React, { useState, ReactElement } from 'react';
+import React, { useState } from 'react';
 import { Button } from '../button/button';
 import { CloseButton } from './close button/close-button';
-import classes from './form-modal.module.css'
 import { TextInput, TextFieldStructure } from './text input/text-input';
 import { OptionInput, OptionFieldStructure } from './option input/option-input';
 import { DateInput, DateFieldStructure } from './date input/date-input';
 import { FileInput, FileFieldStructure } from './file input/file-input';
 import { initialState } from './initial-state';
-import { validate } from './validate';
+import { validate as validateRequired } from './validate';
+import { useStyles } from './styles'
+import { Typography } from '@material-ui/core';
 
 export interface Field {
 	type: 'text' | 'option' | 'date' | 'file';
@@ -45,23 +46,23 @@ export type InitialValues <T extends FieldStructures> = {
 	[k in keyof T]?: FieldValue<T[k]>
 }
 
-export interface FormAction <T extends FormValues> {
-	name: string
-	label: string | ReactElement
-	validate?: boolean
-	action: (values: T) => void | Promise<void>
+export type FormErrors <T extends FieldStructures = FieldStructures> = {
+	valid: boolean
+	errors: { [k in keyof T]?: string }
 }
 
 interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
 	initialValues?: InitialValues<T>;
-	actions: FormAction<FormValues<T>>[]
-	handleClose: () => void;
+	validate?: (valuse: FormValues<T>) => FormErrors<T>
+	onSubmit: (values: FormValues<T>) => void | Promise<void>
+	onClose: () => void;
 }
 
 export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) => {
-	const { name, fieldStructures, initialValues, actions, handleClose } = props
+	const { name, fieldStructures, initialValues, validate, onSubmit, onClose } = props
+	const classes = useStyles()
 
 	const fields = Object.keys(fieldStructures)
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
@@ -72,6 +73,23 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 		newValues[name] = value;
 		setValues(newValues);
 	};
+
+	const handleValidation = () => {
+		const requiredValidation = validateRequired(fieldStructures, values)
+		const customValidation = validate ? validate(values) : { valid: true, errors: {} }
+
+		const errors = { ...customValidation.errors, ...requiredValidation.errors }
+		const valid = requiredValidation.valid && customValidation.valid
+
+		return { valid, errors }
+	}
+
+	const handleSubmit = () => {
+		const validation = handleValidation()
+
+		setErrors(validation.errors)
+		if (validation.valid) onSubmit(values)
+	}
 
 	const inputs = fields.map(field => {
 		const fieldStructure = fieldStructures[field]
@@ -115,39 +133,22 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 		) : null;
 	});
 
-	const actionButtons = actions.map(action => {
-		const handleClick = () => {
-			if (action.validate) {
-				const validation = validate(fieldStructures, values);
-
-				setErrors(validation.errors);
-				if (validation.valid) action.action(values);
-			} else {
-				action.action(values)
-			}
-		}
-
-		return (
-			<Button action={handleClick} key={action.name} aria-label={action.name}>
-				{action.label}
-			</Button>
-		)
-	})
-
 	return (
 		<section className={classes.scrimming}>
 			<div className={classes.card}>
 				<div className={classes.card_head}>
-					<CloseButton handleClose={handleClose} />
-					<h2>{name}</h2>
+					<CloseButton handleClose={onClose} />
+					<Typography variant='h2'>{name}</Typography>
 				</div>
 
-				<form className={classes.form}>
-					<div className={classes.card_content}>{inputs}</div>
-				</form>
+				<div className={classes.card_content}>
+					<form className={classes.form}>
+						{inputs}
+					</form>
+				</div>
 
 				<div className={classes.card_actions}>
-					{actionButtons}
+					<Button action={handleSubmit}>Submit</Button>
 				</div>
 			</div>
 		</section>

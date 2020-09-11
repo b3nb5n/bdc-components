@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, ThemeProvider, PageHeader } from 'bdc-components';
-import 'bdc-components/dist/index.css';
+import { FormModal, ThemeProvider, Button } from 'bdc-components';
 
 const App = () => {
 	const [ modalOpen, setModalOpen ] = useState(false);
@@ -21,18 +20,14 @@ const App = () => {
 				headshot: { type: 'file' },
 				bio: { type: 'text', multiline: true }
 			}}
-			actions={[ { name: 'save', label: 'Save', action: console.log } ]}
-			handleClose={closeModal}
+			onSubmit={console.log}
+			onClose={closeModal}
 		/>
-	);
-
-	const Header = () => (
-		<PageHeader title="Page Header" actions={[ { name: 'login', label: 'Login', action: openModal } ]} />
 	);
 
 	return (
 		<ThemeProvider>
-			<Header />
+			<Button action={openModal}>Sign Up</Button>
 			{modalOpen && <Modal />}
 		</ThemeProvider>
 	);
