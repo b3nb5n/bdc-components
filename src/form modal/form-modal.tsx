@@ -55,13 +55,14 @@ interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
 	initialValues?: InitialValues<T>;
-	validate?: (valuse: FormValues<T>) => FormErrors<T>
+	validate?: (values: FormValues<T>) => FormErrors<T>
+	onChange?: (fieldName: keyof T, value: FieldValue) => void
 	onSubmit: (values: FormValues<T>) => void | Promise<void>
 	onClose: () => void;
 }
 
 export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) => {
-	const { name, fieldStructures, initialValues, validate, onSubmit, onClose } = props
+	const { name, fieldStructures, initialValues, validate, onChange, onSubmit, onClose } = props
 	const classes = useStyles()
 
 	const fields = Object.keys(fieldStructures)
@@ -72,6 +73,7 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 		const newValues = { ...values };
 		newValues[name] = value;
 		setValues(newValues);
+		if (onChange) onChange(name, value)
 	};
 
 	const handleValidation = () => {

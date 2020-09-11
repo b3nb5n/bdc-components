@@ -2,7 +2,6 @@ Todo:
 
 FormModal:
     - re-implement multiple actions
-    - add an on change prop
     - phone, email, and number inputs
 
 Button:

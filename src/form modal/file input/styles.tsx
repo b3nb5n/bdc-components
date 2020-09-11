@@ -29,6 +29,7 @@ export const useStyles = makeStyles(theme => ({
 		alignItems: 'center',
 		justifyContent: 'center',
 		color: 'rgba(0, 0, 0, 0.54)',
+		fontFamily: theme.typography.fontFamily,
 		fontWeight: 400,
 		textAlign: 'center',
 		fontSize: '1rem',

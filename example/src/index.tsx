@@ -21,6 +21,20 @@ const App = () => {
 				headshot: { type: 'file', required: true },
 				bio: { type: 'text', multiline: true, required: true }
 			}}
+			validate={fieldValues => {
+				if (fieldValues.name !== 'Ben Baldwin') {
+					return {
+						valid: false,
+						errors: { name: 'Imposter!' }
+					};
+				} else {
+					return {
+						valid: true,
+						errors: {}
+					};
+				}
+			}}
+			onChange={(field, value) => console.log(`${field}: ${value}`)}
 			onSubmit={values => {
 				console.log(values);
 				return new Promise(resolve => setTimeout(resolve, 2000));
