@@ -1,0 +1,9 @@
+Todo:
+
+FormModal:
+    - re-implement multiple actions
+    - add an on chane prop
+    - phone, email, and number inputs
+    - 
+
+Button:

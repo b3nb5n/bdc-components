@@ -84,11 +84,11 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 		return { valid, errors }
 	}
 
-	const handleSubmit = () => {
+	const handleSubmit = async () => {
 		const validation = handleValidation()
 
 		setErrors(validation.errors)
-		if (validation.valid) onSubmit(values)
+		if (validation.valid) await onSubmit(values)
 	}
 
 	const inputs = fields.map(field => {

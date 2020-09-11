@@ -12,9 +12,11 @@ export const Button: React.FC<ButtonProps> = ({ action, children }) => {
 	const classes = useStyles();
 
 	const handleClick = async () => {
-		setLoading(true);
-		await action();
-		setLoading(false);
+		if (!loading) {
+			setLoading(true);
+			await action();
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -24,7 +26,6 @@ export const Button: React.FC<ButtonProps> = ({ action, children }) => {
 				color="primary"
 				onClick={handleClick}
 				className={classes.button}
-				disabled={loading}
 				disableElevation
 			>
 				<div className={classes.children} style={{ opacity: loading ? 0 : 1 }}>

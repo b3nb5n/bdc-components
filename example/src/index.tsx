@@ -20,7 +20,10 @@ const App = () => {
 				headshot: { type: 'file' },
 				bio: { type: 'text', multiline: true }
 			}}
-			onSubmit={console.log}
+			onSubmit={values => {
+				console.log(values);
+				return new Promise(resolve => setTimeout(resolve, 2000));
+			}}
 			onClose={closeModal}
 		/>
 	);
