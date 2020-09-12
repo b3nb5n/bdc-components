@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, Button, ThemeProvider } from 'bdc-components';
+import { FormModal, Button, ThemeProvider, bdcTheme } from 'bdc-components';
 import { ExitToApp as SignInIcon } from '@material-ui/icons';
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
 	);
 
 	return (
-		<ThemeProvider>
+		<ThemeProvider theme={bdcTheme}>
 			<Button action={openModal}>
 				<SignInIcon />
 			</Button>

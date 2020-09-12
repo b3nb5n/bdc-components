@@ -17,14 +17,12 @@ export const useStyles = makeStyles(theme => ({
 		justifyContent: 'center',
 		alignItems: 'center',
 		outline: 'none',
-		color: theme.palette.text.secondary,
 		'&:hover': {
 			borderColor: '#212121'
 		},
 		'&:focus': {
 			borderColor: theme.palette.primary.main,
-			borderWidth: 2,
-			color: theme.palette.primary.main
+			borderWidth: 2
 		}
 	},
 	upload_overlay: {
@@ -37,7 +35,7 @@ export const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: 'inherit',
+		color: theme.palette.text.secondary,
 		fontFamily: theme.typography.fontFamily,
 		fontWeight: theme.typography.fontWeightRegular,
 		textAlign: 'center',

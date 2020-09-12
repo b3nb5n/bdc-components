@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 export const useStyles = makeStyles(theme => ({
 	button: {
 		margin: '0 6px',
-		padding: '6px 24px'
+		padding: '8px 24px'
 	},
 	button_wrapper: {
 		position: 'relative'
