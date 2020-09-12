@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, ThemeProvider, Button } from 'bdc-components';
+import { FormModal, Button, ThemeProvider } from 'bdc-components';
 import { ExitToApp as SignInIcon } from '@material-ui/icons';
 
 const App = () => {
 	const [ modalOpen, setModalOpen ] = useState(false);
-	const openModal = () => setModalOpen(true);
+	const openModal = async () => setModalOpen(true);
 	const closeModal = () => setModalOpen(false);
 
 	const Modal = () => (
@@ -18,7 +18,7 @@ const App = () => {
 					type: 'option',
 					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
 				},
-				headshot: { type: 'file' },
+				headshot: { type: 'file', required: true },
 				bio: { type: 'text', multiline: true }
 			}}
 			onSubmit={values => {

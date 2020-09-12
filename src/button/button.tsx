@@ -31,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({ action, children }) => {
 				<div className={classes.children} style={{ opacity: loading ? 0 : 1 }}>
 					{children}
 				</div>
-				{loading && <CircularProgress size={24} className={classes.button_spinner} />}
+				{loading && <CircularProgress size={18} className={classes.button_spinner} />}
 			</MuiButton>
 		</div>
 	);

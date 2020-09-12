@@ -6,6 +6,7 @@ export const useStyles = makeStyles(theme => ({
 		borderWidth: '1px',
 		borderStyle: 'solid',
 		borderColor: '#ccc',
+		borderRadius: theme.shape.borderRadius,
 		width: '100%',
 		height: '105px',
 		maxWidth: '360px',
@@ -28,11 +29,11 @@ export const useStyles = makeStyles(theme => ({
 		flexDirection: 'column',
 		alignItems: 'center',
 		justifyContent: 'center',
-		color: 'rgba(0, 0, 0, 0.54)',
+		color: theme.palette.text.secondary,
 		fontFamily: theme.typography.fontFamily,
-		fontWeight: 400,
+		fontWeight: theme.typography.fontWeightRegular,
 		textAlign: 'center',
-		fontSize: '1rem',
+		fontSize: theme.typography.fontSize,
 		zIndex: 1
 	},
 	image_preview: {
@@ -44,7 +45,8 @@ export const useStyles = makeStyles(theme => ({
 		margin: '4px 14px 0',
 		fontSize: '0.75rem',
 		lineHeight: 1.66,
-		color: 'rgba(0, 0, 0, 054)'
+		color: theme.palette.text.secondary,
+		...theme.typography.caption
 	},
 	error: {
 		color: theme.palette.error.main,
