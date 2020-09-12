@@ -3,6 +3,9 @@ Todo:
 FormModal:
     - re-implement multiple actions
     - phone, email, and number inputs
+    - seprate option values and labels
+    - fix select return type
+    - async select field
 
 Button:
 

@@ -61,11 +61,9 @@ interface FormModalProps <T extends FieldStructures> {
 	onClose: () => void;
 }
 
-export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) => {
-	const { name, fieldStructures, initialValues, validate, onChange, onSubmit, onClose } = props
+export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, initialValues, validate, onChange, onSubmit, onClose }: FormModalProps<T>) => {
 	const classes = useStyles()
 
-	const fields = Object.keys(fieldStructures)
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
 	const [ errors, setErrors ] = useState<{ [key: string]: string }>({});
 
@@ -93,45 +91,25 @@ export const FormModal = <T extends FieldStructures> (props: FormModalProps<T>) 
 		if (validation.valid) await onSubmit(values)
 	}
 
+	const fields = Object.keys(fieldStructures)
 	const inputs = fields.map(field => {
 		const fieldStructure = fieldStructures[field]
+		const inputProps = {
+			name: field,
+			value: values[field],
+			error: errors[field],
+			handleChange,
+			key: `${field}-input`
+		}
 
 		return fieldStructure.type === 'text' ? (
-			<TextInput
-				fieldStructure={fieldStructure}
-				name={field}
-				value={values[field]}
-				error={errors[field]}
-				handleChange={handleChange}
-				key={field}
-			/>
+			<TextInput {...inputProps} fieldStructure={fieldStructure} />
 		) : fieldStructure.type === 'date' ? (
-			<DateInput
-				fieldStructure={fieldStructure}
-				name={field}
-				value={values[field]}
-				error={errors[field]}
-				handleChange={handleChange}
-				key={field}
-			/>
+			<DateInput {...inputProps} fieldStructure={fieldStructure} />
 		) : fieldStructure.type === 'option' ? (
-			<OptionInput
-				fieldStructure={fieldStructure}
-				name={field}
-				value={values[field]}
-				error={errors[field]}
-				handleChange={handleChange}
-				key={field}
-			/>
+			<OptionInput {...inputProps} fieldStructure={fieldStructure} />
 		) : fieldStructure.type === 'file' ? (
-			<FileInput
-				fieldStructure={fieldStructure}
-				name={field}
-				value={values[field]}
-				error={errors[field]}
-				handleChange={handleChange}
-				key={field}
-			/>
+			<FileInput {...inputProps} fieldStructure={fieldStructure} />
 		) : null;
 	});
 

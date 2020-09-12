@@ -18,7 +18,7 @@ const App = () => {
 					type: 'option',
 					options: [ 'pizza', 'salad', 'cookies', 'macaroni', 'chicken' ]
 				},
-				headshot: { type: 'file', required: true },
+				headshot: { type: 'file' },
 				bio: { type: 'text', multiline: true }
 			}}
 			onSubmit={values => {

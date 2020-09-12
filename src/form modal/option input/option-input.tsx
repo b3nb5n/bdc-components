@@ -5,7 +5,7 @@ import { Autocomplete } from '@material-ui/lab';
 
 export interface OptionFieldStructure extends Field {
 	type: 'option';
-	options: string[];
+	options: ReadonlyArray<string>;
 	multi?: boolean;
 }
 
@@ -25,7 +25,7 @@ export const OptionInput = <T extends OptionFieldStructure>(props: OptionInputPr
 	return (
 		<Autocomplete
 			multiple={!!fieldStructure.multi}
-			options={fieldStructure.options}
+			options={[ ...fieldStructure.options ]}
 			value={value}
 			getOptionLabel={(option: string) => option}
 			onChange={(_event, value) => handleChange(name, value)}

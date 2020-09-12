@@ -61,6 +61,7 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 					id={name + '-label'}
 					htmlFor={name + '-input'}
 					className={`${classes.file_upload} ${error && classes.error}`}
+					tabIndex={0}
 				>
 					<div className={`${classes.upload_overlay} ${error && classes.error}`}>
 						<UploadIcon />
