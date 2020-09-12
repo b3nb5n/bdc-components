@@ -30,8 +30,8 @@ const App = () => {
 				headshot: { type: 'file' },
 				bio: { type: 'text', multiline: true }
 			}}
-			handleSubmit={console.log}
-			handleClose={() => console.log('close')}
+			onSubmit={console.log}
+			onClose={() => console.log('close')}
 		/>
 	);
 };

@@ -57,22 +57,22 @@ export const FileInput: React.FC<FileInputProps> = ({ fieldStructure, name, valu
 				}}
 			/>
 
-			<label
-				id={name + '-label'}
-				htmlFor={name + '-input'}
-				className={`${classes.file_upload} ${error && classes.error}`}
-			>
-				<div className={`${classes.upload_overlay} ${error && classes.error}`}>
-					<UploadIcon />
-					<label>{fieldStructure.label || name}</label>
-				</div>
+				<label
+					id={name + '-label'}
+					htmlFor={name + '-input'}
+					className={`${classes.file_upload} ${error && classes.error}`}
+				>
+					<div className={`${classes.upload_overlay} ${error && classes.error}`}>
+						<UploadIcon />
+						<label>{fieldStructure.label || name}</label>
+					</div>
 
-				<img
-					id={`${name}-preview`}
-					src={typeof value === 'string' ? value : undefined}
-					className={classes.image_preview}
-				/>
-			</label>
+					<img
+						id={`${name}-preview`}
+						src={typeof value === 'string' ? value : undefined}
+						className={classes.image_preview}
+					/>
+				</label>
 
 			{fieldStructure.helpText || error ? (
 				<p className={`${classes.help_text} ${error && classes.error}`}>

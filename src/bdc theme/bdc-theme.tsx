@@ -22,7 +22,7 @@ export const ThemeProvider: React.FC = ({ children }) => (
 					textTransform: 'capitalize'
 				},
 				button: {
-					fontSize: '18px',
+					fontSize: '16px',
 					fontWeight: 800,
 					textTransform: 'capitalize'
 				}
