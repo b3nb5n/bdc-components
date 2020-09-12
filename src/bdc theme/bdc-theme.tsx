@@ -24,7 +24,8 @@ export const ThemeProvider: React.FC = ({ children }) => (
 				button: {
 					fontSize: '16px',
 					fontWeight: 800,
-					textTransform: 'capitalize'
+					textTransform: 'capitalize',
+					lineHeight: '24px'
 				}
 			},
 			shape: {
