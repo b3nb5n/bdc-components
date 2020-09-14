@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, Button, ThemeProvider, bdcTheme } from 'bdc-components';
+import { FormModal, Button, ThemeProvider, bdcTheme, DataTable } from 'bdc-components';
 import { ExitToApp as SignInIcon } from '@material-ui/icons';
 
 const App = () => {
@@ -29,11 +29,20 @@ const App = () => {
 		/>
 	);
 
+	const Table = () => (
+		<DataTable
+			fieldMap={{ name: { label: 'Name', columnTemplate: 2 }, email: { label: 'Email' } }}
+			items={{ ben: { name: 'Ben', email: 'ben@baldwindesign.co' } }}
+			itemClickHandler={(data, identifier) => console.log(`${identifier}: `, data)}
+		/>
+	);
+
 	return (
 		<ThemeProvider theme={bdcTheme}>
 			<Button action={openModal}>
 				<SignInIcon />
 			</Button>
+			<Table />
 			{modalOpen && <Modal />}
 		</ThemeProvider>
 	);

@@ -38,12 +38,20 @@ export type FieldValue <T extends FieldStructure = FieldStructure> =
 	: T extends FileFieldStructure ? string | File | null
 	: string | string[] | Date | File | null
 
+export type InitialValue <T extends FieldStructure = FieldStructure> =
+	T extends TextFieldStructure ? string
+	: T extends DateFieldStructure ? Date | null
+	: T extends OptionFieldStructure & { multi: true } ? string[]
+	: T extends OptionFieldStructure ? string | null
+	: T extends FileFieldStructure ? string | File | null
+	: string | string[] | Date | File | null
+
 export type FormValues <T extends FieldStructures = FieldStructures> = {
 	[k in keyof T]: FieldValue<T[k]>
 }
 
 export type InitialValues <T extends FieldStructures> = {
-	[k in keyof T]?: FieldValue<T[k]>
+	[k in keyof T]?: InitialValue<T[k]>
 }
 
 export type FormErrors <T extends FieldStructures = FieldStructures> = {
