@@ -1,6 +1,6 @@
 {
 	"name": "bdc-components",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"description": "React components for visualizing and collecting data.",
 	"author": "baldwin-design-co",
 	"license": "MIT",

@@ -13,6 +13,7 @@ export const useStyles = makeStyles({
 		transition: '200ms ease',
 		alignItems: 'center',
 		justifyContent: 'start',
+		cursor: 'default',
 		'&>*': {
 			overflow: 'hidden',
 			textOverflow: 'ellipsis',
