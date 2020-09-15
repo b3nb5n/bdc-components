@@ -4,29 +4,44 @@ import { ItemData } from '../data-table';
 
 interface TableItemProps {
 	data: ItemData;
-	identifier: string;
+	itemId: string;
 	fields: string[];
-	gridTemplateColumns: string;
+	identifyingField?: any;
+	columns: string;
+	itemIcon?: React.ReactNode;
 	clickHandler: (data: ItemData, identifier: string) => void;
 }
 
 export const TableItem: React.FC<TableItemProps> = ({
 	data,
-	identifier,
+	itemId: identifier,
 	fields,
-	gridTemplateColumns,
+	identifyingField,
+	columns,
+	itemIcon,
 	clickHandler
 }) => {
 	const classes = useStyles();
 
-	const itemFields = fields.map(field => <span key={field}>{data[field]}</span>);
+	const itemFields = fields.map(
+		field =>
+			identifyingField && field === identifyingField ? (
+				<b key={field}>{data[field]}</b>
+			) : (
+				<span key={field}>{data[field]}</span>
+			)
+	);
+
+	const gridTemplateColumns = itemIcon ? `36px ${columns}` : columns;
+	const padding = itemIcon ? '12px 36px 12px 24px' : undefined;
 
 	return (
 		<div
 			className={classes.table_item}
-			style={{ gridTemplateColumns }}
+			style={{ gridTemplateColumns, padding }}
 			onClick={() => clickHandler(data, identifier)}
 		>
+			{itemIcon}
 			{itemFields}
 		</div>
 	);

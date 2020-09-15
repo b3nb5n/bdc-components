@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
 import { FormModal, Button, ThemeProvider, bdcTheme, DataTable } from 'bdc-components';
-import { ExitToApp as SignInIcon } from '@material-ui/icons';
+import { ExitToApp as SignInIcon, AccountCircleOutlined as UserIcon } from '@material-ui/icons';
 
 interface User {
 	name: string;
@@ -38,12 +38,14 @@ const App = () => {
 	const Table = () => (
 		<DataTable
 			fieldMap={{
-				name: { label: 'Name', columnTemplate: 2 },
 				email: { label: 'Email', columnTemplate: 2 },
+				name: { label: 'Name', columnTemplate: 2 },
 				role: { label: 'Role' }
 			}}
+			identifyingField="name"
 			items={{ ben: { email: 'ben@baldwindesign.co', name: 'Ben', role: 'owner' } }}
-			itemClickHandler={data => setUser(data)}
+			itemIcon={<UserIcon />}
+			itemClickHandler={userData => setUser(userData)}
 		/>
 	);
 

@@ -13,34 +13,39 @@ export type Items <T extends FieldMap = FieldMap> = { [key: string]: ItemData<T>
 interface DataTableProps <T extends FieldMap> {
     items: Items<T>
     fieldMap: T
+    identifyingField?: keyof T
+    itemIcon?: React.ReactNode
 	itemClickHandler: (data: ItemData<T>, identifier: string) => void;
 }
 
-export const DataTable = <T extends FieldMap> ({ items, fieldMap, itemClickHandler }: DataTableProps<T>) => {
+export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingField, itemIcon, itemClickHandler }: DataTableProps<T>) => {
     const classes = useStyles()
 
     const fields = Object.keys(fieldMap)
+    const orderedFields = identifyingField ? fields.sort((a, b) => (a === identifyingField ? -1 : b === identifyingField ? 1 : 0)) : fields
 
-    const columnTemplates = fields.map(field => fieldMap[field].columnTemplate?.toString() || '1')
+    const columnTemplates = orderedFields.map(field => fieldMap[field].columnTemplate?.toString() || '1')
     const gridTemplateColumns = columnTemplates.join('fr ') + 'fr'
 
-    const headLabels = fields.map(field => <b key={field}>{fieldMap[field].label || field}</b>)
+    const headLabels = orderedFields.map(field => <b key={field}>{fieldMap[field].label || field}</b>)
 
     const itemIdentifiers = Object.keys(items)
     const tableItems = itemIdentifiers.map(identifier => (
         <TableItem
             key={identifier}
             data={items[identifier]}
-            fields={fields}
-            identifier={identifier}
-            gridTemplateColumns={gridTemplateColumns}
+            fields={orderedFields}
+            identifyingField={identifyingField}
+            itemId={identifier}
+            columns={gridTemplateColumns}
+            itemIcon={itemIcon}
             clickHandler={itemClickHandler}
         />
     ))
 
     return (
         <div>
-            <div style={{ gridTemplateColumns }} className={classes.table_head}>{headLabels}</div>
+            <div style={{ gridTemplateColumns, paddingLeft: itemIcon ? 72 : undefined }} className={classes.table_head}>{headLabels}</div>
             <div className={classes.table}>{tableItems}</div>
         </div>
     );
