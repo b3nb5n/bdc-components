@@ -5,7 +5,7 @@ import { TableItem } from './table item/table-item';
 export type FieldMap = { [key: string]: { label?: string, columnTemplate?: number } }
 
 export type ItemData <T extends FieldMap = FieldMap> = {
-    [k in keyof T]: any
+    [k in keyof T]: string
 }
 
 export type Items <T extends FieldMap = FieldMap> = { [key: string]: ItemData<T> }
@@ -31,6 +31,7 @@ export const DataTable = <T extends FieldMap> ({ items, fieldMap, itemClickHandl
         <TableItem
             key={identifier}
             data={items[identifier]}
+            fields={fields}
             identifier={identifier}
             gridTemplateColumns={gridTemplateColumns}
             clickHandler={itemClickHandler}

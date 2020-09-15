@@ -5,6 +5,7 @@ import { ItemData } from '../data-table';
 interface TableItemProps {
 	data: ItemData;
 	identifier: string;
+	fields: string[];
 	gridTemplateColumns: string;
 	clickHandler: (data: ItemData, identifier: string) => void;
 }
@@ -12,12 +13,12 @@ interface TableItemProps {
 export const TableItem: React.FC<TableItemProps> = ({
 	data,
 	identifier,
+	fields,
 	gridTemplateColumns,
 	clickHandler
 }) => {
 	const classes = useStyles();
 
-	const fields = Object.keys(data);
 	const itemFields = fields.map(field => <span key={field}>{data[field]}</span>);
 
 	return (
