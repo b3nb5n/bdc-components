@@ -1,21 +1,20 @@
 import React from 'react';
 import { useStyles } from './styles'
 import { TableItem } from './table item/table-item';
+import { Typography } from '@material-ui/core';
 
 export type FieldMap = { [key: string]: { label?: string, columnTemplate?: number } }
 
-export type ItemData <T extends FieldMap = FieldMap> = {
+export type Item <T extends FieldMap = FieldMap> = {
     [k in keyof T]: string
-}
-
-export type Items <T extends FieldMap = FieldMap> = { [key: string]: ItemData<T> }
+} & { [key: string]: string }
 
 interface DataTableProps <T extends FieldMap> {
-    items: Items<T>
+    items: Item<T>[]
     fieldMap: T
     identifyingField?: keyof T
     itemIcon?: React.ReactNode
-	itemClickHandler: (data: ItemData<T>, identifier: string) => void;
+	itemClickHandler: (data: Item<T>) => void;
 }
 
 export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingField, itemIcon, itemClickHandler }: DataTableProps<T>) => {
@@ -27,16 +26,14 @@ export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingFie
     const columnTemplates = orderedFields.map(field => fieldMap[field].columnTemplate?.toString() || '1')
     const gridTemplateColumns = columnTemplates.join('fr ') + 'fr'
 
-    const headLabels = orderedFields.map(field => <b key={field}>{fieldMap[field].label || field}</b>)
+    const headLabels = orderedFields.map(field => <Typography variant='h3' key={field}>{fieldMap[field].label || field}</Typography>)
 
-    const itemIdentifiers = Object.keys(items)
-    const tableItems = itemIdentifiers.map(identifier => (
+    const tableItems = items.map((item, i) => (
         <TableItem
-            key={identifier}
-            data={items[identifier]}
+            key={i}
+            data={item}
             fields={orderedFields}
             identifyingField={identifyingField}
-            itemId={identifier}
             columns={gridTemplateColumns}
             itemIcon={itemIcon}
             clickHandler={itemClickHandler}

@@ -18,6 +18,19 @@ export const bdcTheme = createMuiTheme({
 			fontWeight: 800,
 			textTransform: 'capitalize'
 		},
+		h3: {
+			fontSize: '18px',
+			fontWeight: 800,
+			textTransform: 'capitalize'
+		},
+		h4: {
+			fontSize: '16px',
+			fontWeight: 800,
+			textTransform: 'capitalize'
+		},
+		body1: {
+			fontSize: '16px'
+		},
 		button: {
 			fontSize: '16px',
 			fontWeight: 800,

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, Button, ThemeProvider, bdcTheme, DataTable } from 'bdc-components';
-import { ExitToApp as SignInIcon, AccountCircleOutlined as UserIcon } from '@material-ui/icons';
+import { FormModal, ThemeProvider, bdcTheme, DataTable } from 'bdc-components';
+import { AccountCircleOutlined as UserIcon } from '@material-ui/icons';
 
 interface User {
 	name: string;
@@ -11,12 +11,6 @@ interface User {
 
 const App = () => {
 	const [ user, setUser ] = useState<User | undefined>();
-
-	const newUser = {
-		name: '',
-		email: '',
-		role: null
-	};
 
 	const Modal = () => (
 		<FormModal
@@ -43,17 +37,14 @@ const App = () => {
 				role: { label: 'Role' }
 			}}
 			identifyingField="name"
-			items={{ ben: { email: 'ben@baldwindesign.co', name: 'Ben', role: 'owner' } }}
+			items={[ { email: 'ben@baldwindesign.co', name: 'Ben Baldwin', role: 'owner', uid: 'ivheiv' } ]}
 			itemIcon={<UserIcon />}
-			itemClickHandler={userData => setUser(userData)}
+			itemClickHandler={setUser}
 		/>
 	);
 
 	return (
 		<ThemeProvider theme={bdcTheme}>
-			<Button action={() => setUser(newUser)}>
-				<SignInIcon />
-			</Button>
 			<Table />
 			{user && <Modal />}
 		</ThemeProvider>

@@ -1,20 +1,19 @@
 import React from 'react';
 import { useStyles } from './styles';
-import { ItemData } from '../data-table';
+import { Item } from '../data-table';
+import { Typography } from '@material-ui/core';
 
 interface TableItemProps {
-	data: ItemData;
-	itemId: string;
+	data: Item;
 	fields: string[];
 	identifyingField?: any;
 	columns: string;
 	itemIcon?: React.ReactNode;
-	clickHandler: (data: ItemData, identifier: string) => void;
+	clickHandler: (data: Item) => void;
 }
 
 export const TableItem: React.FC<TableItemProps> = ({
 	data,
-	itemId: identifier,
 	fields,
 	identifyingField,
 	columns,
@@ -26,9 +25,13 @@ export const TableItem: React.FC<TableItemProps> = ({
 	const itemFields = fields.map(
 		field =>
 			identifyingField && field === identifyingField ? (
-				<b key={field}>{data[field]}</b>
+				<Typography variant="h4" key={field}>
+					{data[field]}
+				</Typography>
 			) : (
-				<span key={field}>{data[field]}</span>
+				<Typography variant="body1" key={field}>
+					{data[field]}
+				</Typography>
 			)
 	);
 
@@ -39,7 +42,7 @@ export const TableItem: React.FC<TableItemProps> = ({
 		<div
 			className={classes.table_item}
 			style={{ gridTemplateColumns, padding }}
-			onClick={() => clickHandler(data, identifier)}
+			onClick={() => clickHandler(data)}
 		>
 			{itemIcon}
 			{itemFields}
