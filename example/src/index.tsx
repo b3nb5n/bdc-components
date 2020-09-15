@@ -20,7 +20,7 @@ const App = () => {
 
 	const Modal = () => (
 		<FormModal
-			name="Sign Up"
+			name={user?.name || 'Sign Up'}
 			fieldStructures={{
 				name: { type: 'text' },
 				email: { type: 'text' },
