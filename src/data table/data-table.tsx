@@ -2,22 +2,25 @@ import React from 'react';
 import { useStyles } from './styles'
 import { TableItem } from './table item/table-item';
 import { Typography } from '@material-ui/core';
+import { LoadingState } from './table states/loading-state'
+import { EmptyState } from './table states/empty-state'
 
 export type FieldMap = { [key: string]: { label?: string, columnTemplate?: number } }
 
 export type Item <T extends FieldMap = FieldMap> = {
     [k in keyof T]: string
-} & { [key: string]: string }
+} & { [key: string]: any }
 
 interface DataTableProps <T extends FieldMap> {
     items: Item<T>[]
     fieldMap: T
     identifyingField?: keyof T
     itemIcon?: React.ReactNode
+    loading?: boolean
 	itemClickHandler: (data: Item<T>) => void;
 }
 
-export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingField, itemIcon, itemClickHandler }: DataTableProps<T>) => {
+export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingField, itemIcon, loading, itemClickHandler }: DataTableProps<T>) => {
     const classes = useStyles()
 
     const fields = Object.keys(fieldMap)
@@ -43,7 +46,9 @@ export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingFie
     return (
         <div>
             <div style={{ gridTemplateColumns, paddingLeft: itemIcon ? 72 : undefined }} className={classes.table_head}>{headLabels}</div>
-            <div className={classes.table}>{tableItems}</div>
+            <div className={classes.table}>
+                {loading ? <LoadingState /> : tableItems.length ? tableItems : <EmptyState />}
+            </div>
         </div>
     );
 }
