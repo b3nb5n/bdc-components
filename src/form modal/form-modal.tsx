@@ -31,9 +31,9 @@ export type FieldValue <T extends FieldStructure = FieldStructure> =
 	T extends TextFieldStructure ? string
 	: T extends DateFieldStructure & { required: true } ? Date
 	: T extends DateFieldStructure ? Date | null
-	: T extends OptionFieldStructure & { multi: true } ? string[]
-	: T extends OptionFieldStructure & { required: true } ? string
-	: T extends OptionFieldStructure ? string | null
+	// : T extends OptionFieldStructure & { multi: true } ? string[]
+	: T extends OptionFieldStructure & { required: true } ? string | string[]
+	: T extends OptionFieldStructure ? string | string[] | null
 	: T extends FileFieldStructure & { required: true } ? string | File
 	: T extends FileFieldStructure ? string | File | null
 	: string | string[] | Date | File | null
@@ -62,6 +62,7 @@ export type FormErrors <T extends FieldStructures = FieldStructures> = {
 interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
+	fieldOrder?: string[]
 	initialValues?: InitialValues<T>;
 	validate?: (values: FormValues<T>) => FormErrors<T>
 	onChange?: (fieldName: keyof T, value: FieldValue) => void
@@ -69,7 +70,7 @@ interface FormModalProps <T extends FieldStructures> {
 	onClose: () => void;
 }
 
-export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, initialValues, validate, onChange, onSubmit, onClose }: FormModalProps<T>) => {
+export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, fieldOrder, initialValues, validate, onChange, onSubmit, onClose }: FormModalProps<T>) => {
 	const classes = useStyles()
 
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
@@ -99,7 +100,7 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, i
 		if (validation.valid) await onSubmit(values)
 	}
 
-	const fields = Object.keys(fieldStructures)
+	const fields = fieldOrder || Object.keys(fieldStructures)
 	const inputs = fields.map(field => {
 		const fieldStructure = fieldStructures[field]
 		const inputProps = {

@@ -4,7 +4,7 @@ import { Item } from '../data-table';
 import { Typography } from '@material-ui/core';
 
 interface TableItemProps {
-	data: Item;
+	item: Item;
 	fields: string[];
 	identifyingField?: any;
 	columns: string;
@@ -13,7 +13,7 @@ interface TableItemProps {
 }
 
 export const TableItem: React.FC<TableItemProps> = ({
-	data,
+	item,
 	fields,
 	identifyingField,
 	columns,
@@ -26,11 +26,11 @@ export const TableItem: React.FC<TableItemProps> = ({
 		field =>
 			identifyingField && field === identifyingField ? (
 				<Typography variant="h4" key={field}>
-					{data[field]}
+					{item.data[field]}
 				</Typography>
 			) : (
 				<Typography variant="body1" key={field}>
-					{data[field]}
+					{item.data[field]}
 				</Typography>
 			)
 	);
@@ -42,7 +42,7 @@ export const TableItem: React.FC<TableItemProps> = ({
 		<div
 			className={classes.table_item}
 			style={{ gridTemplateColumns, padding }}
-			onClick={() => clickHandler(data)}
+			onClick={() => clickHandler(item)}
 		>
 			{itemIcon}
 			{itemFields}

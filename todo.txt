@@ -6,6 +6,7 @@ FormModal:
     - seprate option values and labels
     - fix select return type
     - async select field
+    - Fix multi option validation
 
 Button:
 

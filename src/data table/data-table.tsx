@@ -5,22 +5,25 @@ import { Typography } from '@material-ui/core';
 import { LoadingState } from './table states/loading-state'
 import { EmptyState } from './table states/empty-state'
 
-export type FieldMap = { [key: string]: { label?: string, columnTemplate?: number } }
-
-export type Item <T extends FieldMap = FieldMap> = {
-    [k in keyof T]: string
-} & { [key: string]: any }
-
-interface DataTableProps <T extends FieldMap> {
-    items: Item<T>[]
-    fieldMap: T
-    identifyingField?: keyof T
-    itemIcon?: React.ReactNode
-    loading?: boolean
-	itemClickHandler: (data: Item<T>) => void;
+export type FieldMap <T extends Item = Item> = {
+    [k in keyof T['data']]: { label?: string, columnTemplate?: number }
 }
 
-export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingField, itemIcon, loading, itemClickHandler }: DataTableProps<T>) => {
+export type Item = {
+    data: { [key: string]: string }
+    [key: string]: any
+}
+
+interface DataTableProps <T extends Item> {
+    items: T[]
+    fieldMap: FieldMap<T>
+    identifyingField?: keyof T['data']
+    itemIcon?: React.ReactNode
+    loading?: boolean
+	itemClickHandler: (data: T) => void;
+}
+
+export const DataTable = <T extends Item> ({ items, fieldMap, identifyingField, itemIcon, loading, itemClickHandler }: DataTableProps<T>) => {
     const classes = useStyles()
 
     const fields = Object.keys(fieldMap)
@@ -34,7 +37,7 @@ export const DataTable = <T extends FieldMap> ({ items, fieldMap, identifyingFie
     const tableItems = items.map((item, i) => (
         <TableItem
             key={i}
-            data={item}
+            item={item}
             fields={orderedFields}
             identifyingField={identifyingField}
             columns={gridTemplateColumns}

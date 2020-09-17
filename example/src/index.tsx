@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import ReactDOM from 'react-dom';
-import { FormModal, ThemeProvider, bdcTheme, DataTable } from 'bdc-components';
+import { FormModal, ThemeProvider, bdcTheme, DataTable, PageHeader } from 'bdc-components';
 import { AccountCircleOutlined as UserIcon } from '@material-ui/icons';
+import { PersonAdd as NewUserIcon } from '@material-ui/icons'
 
 interface User {
-	name: string;
-	email: string;
-	role: string | null;
+	id: string
+	data: {
+		name: string;
+		email: string;
+		role: string | null;
+	}
 }
 
 const App = () => {
@@ -14,13 +18,12 @@ const App = () => {
 
 	const Modal = () => (
 		<FormModal
-			name={user?.name || 'Sign Up'}
+			name={user?.data.name || 'Sign Up'}
 			fieldStructures={{
-				name: { type: 'text' },
-				email: { type: 'text' },
-				role: { type: 'option', options: [ 'viewer', 'editor', 'admin', 'owner' ] }
+				name: { label: 'name', required: true, type: 'text' },
+				scope: { label: 'Scope', multi: true, options: ["brand strategy","identity design","website"], required: true, type: 'option' }
 			}}
-			initialValues={user}
+			initialValues={user?.data}
 			onSubmit={values => {
 				console.log(values);
 				return new Promise(resolve => setTimeout(resolve, 2000));
@@ -37,14 +40,24 @@ const App = () => {
 				role: { label: 'Role' }
 			}}
 			identifyingField="name"
-			items={[ { email: 'ben@baldwindesign.co', name: 'Ben Baldwin', role: 'owner', uid: 'ivheiv' } ]}
+			items={[ { id: 'ivuvuv', data: { email: 'ben@baldwindesign.co', name: 'Ben Baldwin', role: 'owner' } } ]}
 			itemIcon={<UserIcon />}
 			itemClickHandler={setUser}
 		/>
 	);
 
+	const Header = () => (
+		<PageHeader
+			title='Users'
+			action={() => setUser({id: '', data: { name: '', email: '', role: null }})}
+			actionLabel={<NewUserIcon />}
+			search={() => {}}
+		/>
+	)
+
 	return (
 		<ThemeProvider theme={bdcTheme}>
+			<Header />
 			<Table />
 			{user && <Modal />}
 		</ThemeProvider>
