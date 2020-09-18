@@ -31,9 +31,9 @@ export type FieldValue <T extends FieldStructure = FieldStructure> =
 	T extends TextFieldStructure ? string
 	: T extends DateFieldStructure & { required: true } ? Date
 	: T extends DateFieldStructure ? Date | null
-	// : T extends OptionFieldStructure & { multi: true } ? string[]
-	: T extends OptionFieldStructure & { required: true } ? string | string[]
-	: T extends OptionFieldStructure ? string | string[] | null
+	: T extends OptionFieldStructure & { multi: true } ? string[]
+	: T extends OptionFieldStructure & { required: true } ? string
+	: T extends OptionFieldStructure ? string | null
 	: T extends FileFieldStructure & { required: true } ? string | File
 	: T extends FileFieldStructure ? string | File | null
 	: string | string[] | Date | File | null
@@ -59,6 +59,12 @@ export type FormErrors <T extends FieldStructures = FieldStructures> = {
 	errors: { [k in keyof T]?: string }
 }
 
+export type Action <T extends FieldStructures = FieldStructures> = {
+	label: React.ReactNode
+	validate?: boolean
+	action: (values: FormValues<T>) => void
+}
+
 interface FormModalProps <T extends FieldStructures> {
 	name: string;
 	fieldStructures: T;
@@ -66,11 +72,11 @@ interface FormModalProps <T extends FieldStructures> {
 	initialValues?: InitialValues<T>;
 	validate?: (values: FormValues<T>) => FormErrors<T>
 	onChange?: (fieldName: keyof T, value: FieldValue) => void
-	onSubmit: (values: FormValues<T>) => void | Promise<void>
 	onClose: () => void;
+	actions: Action<T>[]
 }
 
-export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, fieldOrder, initialValues, validate, onChange, onSubmit, onClose }: FormModalProps<T>) => {
+export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, fieldOrder, initialValues, validate, onChange, onClose, actions }: FormModalProps<T>) => {
 	const classes = useStyles()
 
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
@@ -93,11 +99,15 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 		return { valid, errors }
 	}
 
-	const handleSubmit = async () => {
-		const validation = handleValidation()
-
-		setErrors(validation.errors)
-		if (validation.valid) await onSubmit(values)
+	const handleSubmit = async (action: Action) => {
+		if (action.validate) {
+			const validation = handleValidation()
+			
+			setErrors(validation.errors)
+			if (validation.valid) action.action(values)
+		} else {
+			action.action(values)
+		}
 	}
 
 	const fields = fieldOrder || Object.keys(fieldStructures)
@@ -122,6 +132,10 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 		) : null;
 	});
 
+	const actionButtons = actions.map((action, i) => (
+		<Button key={`action-${i}`} action={() => handleSubmit(action)}>{action.label}</Button>
+	))
+
 	return (
 		<section className={classes.scrimming}>
 			<div className={classes.card}>
@@ -137,7 +151,7 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 				</div>
 
 				<div className={classes.card_actions}>
-					<Button action={handleSubmit}>Submit</Button>
+					{actionButtons}
 				</div>
 			</div>
 		</section>

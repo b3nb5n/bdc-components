@@ -2,7 +2,6 @@ General:
     - component animation
 
 FormModal:
-    - re-implement multiple actions
     - phone, email, and number inputs
     - fix select return type
     - async select field
