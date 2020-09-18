@@ -1,9 +1,9 @@
-Todo:
+General:
+    - component animation
 
 FormModal:
     - re-implement multiple actions
     - phone, email, and number inputs
-    - seprate option values and labels
     - fix select return type
     - async select field
     - Fix multi option validation
@@ -11,13 +11,11 @@ FormModal:
 Button:
 
 PageHeader:
-    - make it pretty
+    - fix return link styling
 
-createThemeProvider:
-    - make it work
+DataTable:
+    - Isuue with not displaying data in items
 
 Components to add:
-    - data table
     - inline form
     - update modal
-    - 

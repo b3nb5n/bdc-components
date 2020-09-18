@@ -13,7 +13,13 @@ interface PageHeaderProps {
 	returnLink?: string;
 }
 
-export const PageHeader: React.FC<PageHeaderProps> = ({ title, action, actionLabel, search, returnLink }) => {
+export const PageHeader: React.FC<PageHeaderProps> = ({
+	title,
+	action,
+	actionLabel,
+	search,
+	returnLink
+}) => {
 	const classes = useStyles();
 
 	return (
