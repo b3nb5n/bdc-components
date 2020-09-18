@@ -20,8 +20,9 @@ const App = () => {
 		<FormModal
 			name={user?.data.name || 'Sign Up'}
 			fieldStructures={{
-				name: { label: 'name', required: true, type: 'text' },
-				scope: { label: 'Scope', multi: true, options: ["brand strategy","identity design","website"], required: true, type: 'option' }
+				name: { type: 'text', label: 'Name', required: true },
+				email: { type: 'text', label: 'Email', required: true },
+				role: { type: 'option', label: 'Role', options: [ 'viewer', 'editor', 'admin', 'owner' ], required: true }
 			}}
 			initialValues={user?.data}
 			onSubmit={values => {
