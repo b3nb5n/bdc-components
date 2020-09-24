@@ -11,7 +11,7 @@ export const validate = (fieldStructures: FieldStructures, values: FormValues) =
 		const fieldStructure = fieldStructures[field];
 		const value = values[field];
 
-		if ((fieldStructure.required && !value) || (fieldStructure.required && value === [])) {
+		if (fieldStructure.required && !value) {
 			errors[field] = 'This field is required';
 		}
 

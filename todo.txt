@@ -8,12 +8,11 @@ FormModal:
     - Fix multi option validation
 
 Button:
+    - async loading
 
 PageHeader:
-    - fix return link styling
 
 DataTable:
-    - Isuue with not displaying data in items
 
 Components to add:
     - inline form

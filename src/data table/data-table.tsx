@@ -17,16 +17,17 @@ export type Item = {
 interface DataTableProps <T extends Item> {
     items: T[]
     fieldMap: FieldMap<T>
+    fieldOrder?: string[]
     identifyingField?: keyof T['data']
     itemIcon?: React.ReactNode
     loading?: boolean
 	itemClickHandler: (data: T) => void;
 }
 
-export const DataTable = <T extends Item> ({ items, fieldMap, identifyingField, itemIcon, loading, itemClickHandler }: DataTableProps<T>) => {
+export const DataTable = <T extends Item> ({ items, fieldMap, fieldOrder, identifyingField, itemIcon, loading, itemClickHandler }: DataTableProps<T>) => {
     const classes = useStyles()
 
-    const fields = Object.keys(fieldMap)
+    const fields = fieldOrder || Object.keys(fieldMap)
     const orderedFields = identifyingField ? fields.sort((a, b) => (a === identifyingField ? -1 : b === identifyingField ? 1 : 0)) : fields
 
     const columnTemplates = orderedFields.map(field => fieldMap[field].columnTemplate?.toString() || '1')
