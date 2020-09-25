@@ -62,13 +62,5 @@ export const useStyles = makeStyles({
 		bottom: 0,
 		padding: '24px 54px 24px 60px',
 		boxShadow: '0px -2px 7px -6px black'
-	},
-	form: {
-		boxSizing: 'border-box',
-		width: '100%',
-		maxWidth: '100%',
-		minWidth: '100%',
-		display: 'flex',
-		flexDirection: 'column'
 	}
 });

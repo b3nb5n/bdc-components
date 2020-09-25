@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button } from '../button/button';
-import { CloseButton } from './close button/close-button';
+import { CloseButton } from '../modal/close button/close-button';
 import { TextInput, TextFieldStructure } from './text input/text-input';
 import { OptionInput, OptionFieldStructure } from './option input/option-input';
 import { DateInput, DateFieldStructure } from './date input/date-input';
