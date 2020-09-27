@@ -62,5 +62,10 @@ export const useStyles = makeStyles({
 		bottom: 0,
 		padding: '24px 54px 24px 60px',
 		boxShadow: '0px -2px 7px -6px black'
+	},
+	close_button: {
+		position: 'absolute',
+		left: '24px',
+		top: '24px'
 	}
 });

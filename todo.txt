@@ -8,12 +8,9 @@ FormModal:
     - Fix multi option validation
 
 Button:
-    - async loading
 
 PageHeader:
 
 DataTable:
 
 Components to add:
-    - inline form
-    - update modal

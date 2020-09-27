@@ -1,7 +1,7 @@
-import { Typography } from '@material-ui/core';
+import { IconButton, Typography } from '@material-ui/core';
 import React from 'react';
 import { Button } from '../button/button';
-import { CloseButton } from './close button/close-button';
+import { Close as CloseIcon } from '@material-ui/icons';
 import { useStyles } from './styles';
 
 export type ModalAction = {
@@ -26,13 +26,19 @@ export const Modal: React.FC<ModalProps> = ({ title, onClose, actions, children 
 		<section className={classes.scrimming}>
 			<div className={classes.card}>
 				<div className={classes.card_head}>
-					<CloseButton handleClose={onClose} />
+					<IconButton
+						aria-label="close"
+						onClick={onClose}
+						className={classes.close_button}
+					>
+						<CloseIcon />
+					</IconButton>
 					<Typography variant="h2">{title}</Typography>
 				</div>
 
 				<div className={classes.card_content}>{children}</div>
 
-				<div className={classes.card_actions}>{actionButtons}</div>
+				{actions?.length && <div className={classes.card_actions}>{actionButtons}</div>}
 			</div>
 		</section>
 	);

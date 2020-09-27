@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { Button } from '../button/button';
-import { CloseButton } from '../modal/close button/close-button';
 import { TextInput, TextFieldStructure } from './text input/text-input';
 import { OptionInput, OptionFieldStructure } from './option input/option-input';
 import { DateInput, DateFieldStructure } from './date input/date-input';
@@ -8,7 +6,7 @@ import { FileInput, FileFieldStructure } from './file input/file-input';
 import { initialState } from './initial-state';
 import { validate as validateRequired } from './validate';
 import { useStyles } from './styles'
-import { Typography } from '@material-ui/core';
+import { Modal } from '../modal/modal'
 
 export interface Field {
 	type: 'text' | 'option' | 'date' | 'file';
@@ -89,7 +87,7 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 		if (onChange) onChange(name, value)
 	};
 
-	const handleValidation = () => {
+	const getValidation = () => {
 		const requiredValidation = validateRequired(fieldStructures, values)
 		const customValidation = validate ? validate(values) : { valid: true, errors: {} }
 
@@ -99,9 +97,9 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 		return { valid, errors }
 	}
 
-	const handleSubmit = async (action: Action) => {
+	const handleAction = async (action: Action) => {
 		if (action.validate) {
-			const validation = handleValidation()
+			const validation = getValidation()
 			
 			setErrors(validation.errors)
 			if (validation.valid) action.action(values)
@@ -132,28 +130,11 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 		) : null;
 	});
 
-	const actionButtons = actions.map((action, i) => (
-		<Button key={`action-${i}`} action={() => handleSubmit(action)}>{action.label}</Button>
-	))
-
 	return (
-		<section className={classes.scrimming}>
-			<div className={classes.card}>
-				<div className={classes.card_head}>
-					<CloseButton handleClose={onClose} />
-					<Typography variant='h2'>{name}</Typography>
-				</div>
-
-				<div className={classes.card_content}>
-					<form className={classes.form}>
-						{inputs}
-					</form>
-				</div>
-
-				<div className={classes.card_actions}>
-					{actionButtons}
-				</div>
-			</div>
-		</section>
-	);
+		<Modal title={name} onClose={onClose} actions={actions.map(action => ({ action: () => handleAction(action), label: action.label }))}>
+			<form className={classes.form}>
+				{inputs}
+			</form>
+		</Modal>
+	)
 };
