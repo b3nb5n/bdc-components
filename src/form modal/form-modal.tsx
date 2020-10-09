@@ -1,12 +1,14 @@
+import { IconButton, Typography } from '@material-ui/core';
+import { Close as CloseIcon } from '@material-ui/icons';
 import React, { useState } from 'react';
-import { TextInput, TextFieldStructure } from './text input/text-input';
-import { OptionInput, OptionFieldStructure } from './option input/option-input';
-import { DateInput, DateFieldStructure } from './date input/date-input';
-import { FileInput, FileFieldStructure } from './file input/file-input';
+import { Button } from './button/button';
+import { DateFieldStructure, DateInput } from './date input/date-input';
+import { FileFieldStructure, FileInput } from './file input/file-input';
 import { initialState } from './initial-state';
+import { OptionFieldStructure, OptionInput } from './option input/option-input';
+import { useStyles } from './styles';
+import { TextFieldStructure, TextInput } from './text input/text-input';
 import { validate as validateRequired } from './validate';
-import { useStyles } from './styles'
-import { Modal } from '../modal/modal'
 
 export interface Field {
 	type: 'text' | 'option' | 'date' | 'file';
@@ -64,7 +66,7 @@ export type Action <T extends FieldStructures = FieldStructures> = {
 }
 
 interface FormModalProps <T extends FieldStructures> {
-	name: string;
+	title: string;
 	fieldStructures: T;
 	fieldOrder?: string[]
 	initialValues?: InitialValues<T>;
@@ -74,7 +76,16 @@ interface FormModalProps <T extends FieldStructures> {
 	actions: Action<T>[]
 }
 
-export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, fieldOrder, initialValues, validate, onChange, onClose, actions }: FormModalProps<T>) => {
+export const FormModal = <T extends FieldStructures> ({
+	title,
+	fieldStructures,
+	fieldOrder,
+	initialValues,
+	validate,
+	onChange,
+	onClose,
+	actions
+}: FormModalProps<T>) => {
 	const classes = useStyles()
 
 	const [ values, setValues ] = useState<any>(initialState(fieldStructures, initialValues));
@@ -130,11 +141,36 @@ export const FormModal = <T extends FieldStructures> ({ name, fieldStructures, f
 		) : null;
 	});
 
+	const actionButtons = actions.map(action => (
+		<Button action={() => handleAction(action)}>
+			{action.label}
+		</Button>
+	))
+
 	return (
-		<Modal title={name} onClose={onClose} actions={actions.map(action => ({ action: () => handleAction(action), label: action.label }))}>
-			<form className={classes.form}>
-				{inputs}
-			</form>
-		</Modal>
+		<section className={classes.scrimming}>
+			<div className={classes.card}>
+				<div className={classes.card_head}>
+					<IconButton
+						aria-label="close"
+						onClick={onClose}
+						className={classes.close_button}
+					>
+						<CloseIcon />
+					</IconButton>
+					<Typography variant="h2">{title}</Typography>
+				</div>
+
+				<div className={classes.card_content}>
+					<form className={classes.form}>
+						{inputs}
+					</form>
+				</div>
+
+				<div className={classes.card_actions}>
+					{actionButtons}
+				</div>
+			</div>
+		</section>
 	)
 };
