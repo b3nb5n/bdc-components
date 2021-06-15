@@ -1,6 +1,6 @@
 # bdc-components
 
-> The easiest way to build forms with react.
+> My component library built ontop of material ui
 
 [![NPM](https://img.shields.io/npm/v/bdc-components.svg)](https://www.npmjs.com/package/bdc-components) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
