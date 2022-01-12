@@ -1,58 +1,42 @@
 {
 	"name": "bdc-components",
-	"version": "0.4.0",
-	"description": "React components for visualizing and collecting data.",
-	"author": "baldwin-design-co",
-	"license": "MIT",
-	"repository": "baldwin-design-co/bdc-components",
-	"main": "dist/index.js",
-	"module": "dist/index.modern.js",
-	"source": "src/index.tsx",
-	"engines": {
-		"node": ">=10"
+	"version": "0.5.0",
+	"description": "Yet another react component library",
+	"license": "ISC",
+	"author": "Ben Baldwin",
+	"homepage": "https://github.com/baldwin-dev-co/bdc-components#readme",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/baldwin-dev-co/bdc-components.git"
 	},
+	"bugs": {
+		"url": "https://github.com/baldwin-dev-co/bdc-components/issues"
+	},
+	"main": "dist/cjs/index.js",
+	"module": "dist/esm/index.js",
+	"types": "dist/index.d.ts",
 	"scripts": {
-		"build": "microbundle-crl --no-compress --format modern,cjs",
-		"start": "microbundle-crl watch --no-compress --format modern,cjs",
-		"test": "run-s test:unit test:lint test:build",
-		"test:build": "run-s build",
-		"test:lint": "eslint .",
-		"test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
-		"test:watch": "react-scripts test --env=jsdom",
-		"predeploy": "cd example && npm install && npm run build",
-		"deploy": "gh-pages -d example/build"
+		"start": "start-storybook -p 6006",
+		"build": "rollup -c",
+		"build:storybook": "build-storybook",
+		"prepublish": "npm run build && npm run build:storybook",
+		"publish": "npm publish dist"
 	},
-	"peerDependencies": {
-		"react": "^16.0.0"
+	"dependencies": {
+		"@babel/core": "^7.16.7",
+		"react": "^17.0.2",
+		"react-dom": "^17.0.2",
+		"react-jss": "^10.9.0"
 	},
 	"devDependencies": {
-		"@testing-library/jest-dom": "^4.2.4",
-		"@testing-library/react": "^9.5.0",
-		"@testing-library/user-event": "^7.2.1",
-		"@types/jest": "^25.1.4",
-		"@types/node": "^12.12.38",
-		"@types/react": "^16.9.27",
-		"@types/react-dom": "^16.9.7",
-		"cross-env": "^7.0.2",
-		"gh-pages": "^2.2.0",
-		"microbundle-crl": "^0.13.10",
-		"npm-run-all": "^4.1.5",
-		"prettier": "^2.0.4",
-		"react": "^16.13.1",
-		"react-dom": "^16.13.1",
-		"react-scripts": "^3.4.1",
-		"typescript": "^3.7.5"
+		"@storybook/addon-actions": "^6.4.9",
+		"@storybook/addon-essentials": "^6.4.9",
+		"@storybook/addon-links": "^6.4.9",
+		"@storybook/react": "^6.4.9",
+		"@types/react": "^17.0.0",
+		"typescript": "^4.5.4"
 	},
-	"files": [
-		"dist"
-	],
-	"dependencies": {
-		"@date-io/date-fns": "^1.3.13",
-		"@material-ui/core": "^4.11.0",
-		"@material-ui/icons": "^4.9.1",
-		"@material-ui/lab": "^4.0.0-alpha.56",
-		"@material-ui/pickers": "^3.2.10",
-		"@material-ui/styles": "^4.10.0",
-		"date-fns": "^2.16.1"
+	"peerDependencies": {
+		"react": "^17.0.2"
 	}
 }
