@@ -1,3 +1,5 @@
+import { ThemeProvider } from '../src/theme';
+
 export const parameters = {
 	actions: { argTypesRegex: '^on\\W+' },
 	controls: {
@@ -7,3 +9,11 @@ export const parameters = {
 		},
 	},
 };
+
+export const decorators = [
+	(Story) => (
+		<ThemeProvider>
+			<Story />
+		</ThemeProvider>
+	),
+];
