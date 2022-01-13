@@ -7,7 +7,8 @@ export interface OptionInputStructure extends InputStructureBase {
 	options: string[];
 }
 
-export interface OptionInputProps extends InputProps<OptionInputStructure> {
+export interface OptionInputProps
+	extends Omit<InputProps<OptionInputStructure>, 'type'> {
 	filter?: (option: string, searchTerm: string) => boolean;
 }
 

@@ -1,12 +1,12 @@
 import React from 'react';
-import { InputStructureBase } from '../..';
+import { InputProps, InputStructureBase } from '../..';
 
 export interface FileInputStructure extends InputStructureBase {
 	type: 'file';
-	fileTypes: string[];
+	fileTypes?: string[];
 }
 
-export interface FileInputProps {}
+export type FileInputProps = Omit<InputProps<FileInputStructure>, 'type'>;
 
 const FileInput: React.FC<FileInputProps> = ({}) => {
 	return <input type='file' />;

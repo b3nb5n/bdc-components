@@ -5,7 +5,9 @@ export interface DateInputStructure extends InputStructureBase {
 	type: 'date';
 }
 
-const DateInput: React.FC<InputProps<DateInputStructure>> = ({}) => {
+export type DateInputProps = Omit<InputProps<DateInputStructure>, 'type'>;
+
+const DateInput: React.FC<DateInputProps> = ({}) => {
 	return <input type='date' />;
 };
 

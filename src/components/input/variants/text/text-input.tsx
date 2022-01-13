@@ -6,10 +6,12 @@ export interface TextInputStructure extends InputStructureBase {
 	multiline?: boolean;
 }
 
-export type TextInputProps = InputProps<TextInputStructure>;
+export type TextInputProps = Omit<InputProps<TextInputStructure>, 'type'>;
 
-const TextInput: React.FC<TextInputProps> = ({}) => {
-	return <input type='text' />;
+const TextInput: React.FC<TextInputProps> = ({ onChange }) => {
+	return (
+		<input type='text' onChange={(e) => onChange && onChange(e.target.value)} />
+	);
 };
 
 export default TextInput;
