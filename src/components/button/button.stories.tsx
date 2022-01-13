@@ -2,18 +2,17 @@ import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import Button, { ButtonProps } from '.';
 
-const meta: Meta<typeof Button> = {
+export default {
 	title: 'Button',
 	component: Button,
-};
+	argTypes: {
+		onClick: { action: 'click' },
+	},
+} as Meta<typeof Button>;
 
-export default meta;
+export const Default: Story<ButtonProps> = (args) => <Button {...args} />;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
-
-export const TextButton = Template.bind({});
-TextButton.args = {
-	label: 'Text Button',
+Default.args = {
+	label: 'default',
 	loading: false,
-	onClick: () => {},
 };

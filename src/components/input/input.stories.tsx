@@ -1,38 +1,75 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import Input, { InputProps } from '.';
+import DateInput, { DateInputProps } from './variants/date/date-input';
+import FileInput, { FileInputProps } from './variants/file/file-input';
+import OptionInput, { OptionInputProps } from './variants/option/option-input';
+import TextInput, { TextInputProps } from './variants/text/text-input';
 
-const meta: Meta<typeof Input> = {
+export default {
 	title: 'Input',
 	component: Input,
+	argTypes: {
+		onChange: { action: 'change' },
+	},
+} as Meta<typeof Input>;
+
+export const Default: Story<InputProps> = (args) => <Input {...args} />;
+
+Default.args = {
+	name: 'Default Input',
+	type: 'text',
 };
 
-export default meta;
+export const TextInputStory: Story<TextInputProps> = (args) => (
+	<TextInput {...args} />
+);
 
-const Template: Story<InputProps> = (args) => <Input {...args} />;
+TextInputStory.storyName = 'Text Input';
 
-export const TextInput = Template.bind({});
-TextInput.args = {
-	type: 'text',
-	name: 'text input',
+TextInputStory.argTypes = {
+	name: { type: 'string' },
+	multiline: { type: 'boolean' },
+};
+
+TextInputStory.args = {
+	name: 'Text Input',
 	multiline: false,
 };
 
-export const OptionInput = Template.bind({});
-OptionInput.args = {
-	type: 'option',
-	name: 'option input',
+export const OptionInputStory: Story<OptionInputProps> = (args) => (
+	<OptionInput {...args} />
+);
+
+OptionInputStory.storyName = 'Option Input';
+
+OptionInputStory.args = {
+	name: 'Option Input',
 	options: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
+	multi: false,
 };
 
-export const DateInput = Template.bind({});
-DateInput.args = {
-	type: 'date',
-	name: 'date input',
+OptionInputStory.argTypes = {
+	required: { type: 'boolean' },
+	filter: { type: 'function' },
 };
 
-export const FileInput = Template.bind({});
-FileInput.args = {
-	type: 'file',
-	name: 'file input',
+export const DateInputStory: Story<DateInputProps> = (args) => (
+	<DateInput {...args} />
+);
+
+DateInputStory.storyName = 'Date Input';
+
+DateInputStory.args = {
+	name: 'Date Input',
+};
+
+export const FileInputStory: Story<FileInputProps> = (args) => (
+	<FileInput {...args} />
+);
+
+FileInputStory.storyName = 'File Input';
+
+FileInputStory.args = {
+	name: 'File Input',
 };
