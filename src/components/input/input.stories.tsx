@@ -27,14 +27,10 @@ export const TextInputStory: Story<TextInputProps> = (args) => (
 
 TextInputStory.storyName = 'Text Input';
 
-TextInputStory.argTypes = {
-	name: { type: 'string' },
-	multiline: { type: 'boolean' },
-};
-
 TextInputStory.args = {
 	name: 'Text Input',
 	multiline: false,
+	fullWidth: false,
 };
 
 export const OptionInputStory: Story<OptionInputProps> = (args) => (

@@ -1,3 +1,4 @@
 export * from './components';
-export * from './theme';
+export { createTheme, Theme, ThemeProvider, useTheme } from './theme';
 export * from './utils';
+

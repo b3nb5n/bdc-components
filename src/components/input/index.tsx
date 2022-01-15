@@ -40,6 +40,7 @@ export type InputValue<T extends InputStructure = InputStructure> =
 		: null;
 
 export type InputProps<T extends InputStructure = InputStructure> = T & {
+	fullWidth?: boolean;
 	onChange?: (value: InputValue<T>) => void;
 };
 
@@ -63,3 +64,4 @@ export { default as DateInput } from './variants/date/date-input';
 export { default as FileInput } from './variants/file/file-input';
 export { default as OptionInput } from './variants/option/option-input';
 export { default as TextInput } from './variants/text/text-input';
+
