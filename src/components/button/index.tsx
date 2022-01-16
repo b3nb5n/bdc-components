@@ -2,6 +2,7 @@ import React, { MouseEventHandler, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { theming, useTheme } from '../../theme';
 import CircularProgress from '../progress/variants/circular';
+import Text from '../text';
 
 export interface ButtonProps {
 	label: React.ReactNode;
@@ -81,7 +82,9 @@ const Button: React.FC<ButtonProps> = ({
 				width: fullWidth ? '100%' : 'initial',
 			}}
 		>
-			<div style={{ opacity: loading ? 0 : 1, verticalAlign: 'middle' }}>{label}</div>
+			<div style={{ opacity: loading ? 0 : 1 }}>
+				<Text variant='button'>{label}</Text>
+			</div>
 			{loading && (
 				<div
 					style={{

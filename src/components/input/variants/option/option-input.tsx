@@ -1,8 +1,7 @@
 import React from 'react';
-import { InputProps, InputStructureBase } from '../..';
+import { InputProps, InputStructureGlobals } from '../..';
 
-export interface OptionInputStructure extends InputStructureBase {
-	type: 'option';
+export interface OptionInputStructure extends InputStructureGlobals<'option'> {
 	multi?: boolean;
 	options: string[];
 }

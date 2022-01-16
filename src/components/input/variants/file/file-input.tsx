@@ -1,8 +1,7 @@
 import React from 'react';
-import { InputProps, InputStructureBase } from '../..';
+import { InputProps, InputStructureGlobals } from '../..';
 
-export interface FileInputStructure extends InputStructureBase {
-	type: 'file';
+export interface FileInputStructure extends InputStructureGlobals<'file'> {
 	fileTypes?: string[];
 }
 

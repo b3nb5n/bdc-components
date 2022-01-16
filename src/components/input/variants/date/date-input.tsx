@@ -1,9 +1,7 @@
 import React from 'react';
-import { InputProps, InputStructureBase } from '../..';
+import { InputProps, InputStructureGlobals } from '../..';
 
-export interface DateInputStructure extends InputStructureBase {
-	type: 'date';
-}
+export interface DateInputStructure extends InputStructureGlobals<'date'> {}
 
 export type DateInputProps = Omit<InputProps<DateInputStructure>, 'type'>;
 

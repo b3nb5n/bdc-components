@@ -17,30 +17,26 @@ export default {
 export const Default: Story<InputProps> = (args) => <Input {...args} />;
 
 Default.args = {
-	name: 'Default Input',
+	label: 'Default Input',
 	type: 'text',
 };
 
-export const TextInputStory: Story<TextInputProps> = (args) => (
-	<TextInput {...args} />
-);
+export const TextInputStory: Story<TextInputProps> = (args) => <TextInput {...args} />;
 
 TextInputStory.storyName = 'Text Input';
 
 TextInputStory.args = {
-	name: 'Text Input',
+	label: 'Text Input',
 	multiline: false,
 	fullWidth: false,
 };
 
-export const OptionInputStory: Story<OptionInputProps> = (args) => (
-	<OptionInput {...args} />
-);
+export const OptionInputStory: Story<OptionInputProps> = (args) => <OptionInput {...args} />;
 
 OptionInputStory.storyName = 'Option Input';
 
 OptionInputStory.args = {
-	name: 'Option Input',
+	label: 'Option Input',
 	options: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
 	multi: false,
 };
@@ -50,22 +46,18 @@ OptionInputStory.argTypes = {
 	filter: { type: 'function' },
 };
 
-export const DateInputStory: Story<DateInputProps> = (args) => (
-	<DateInput {...args} />
-);
+export const DateInputStory: Story<DateInputProps> = (args) => <DateInput {...args} />;
 
 DateInputStory.storyName = 'Date Input';
 
 DateInputStory.args = {
-	name: 'Date Input',
+	label: 'Date Input',
 };
 
-export const FileInputStory: Story<FileInputProps> = (args) => (
-	<FileInput {...args} />
-);
+export const FileInputStory: Story<FileInputProps> = (args) => <FileInput {...args} />;
 
 FileInputStory.storyName = 'File Input';
 
 FileInputStory.args = {
-	name: 'File Input',
+	label: 'File Input',
 };

@@ -1,11 +1,10 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { InputProps, InputStructureBase } from '../..';
+import { InputProps, InputStructureGlobals } from '../..';
 import { theming } from '../../../../theme';
 import InputBase from '../input-base';
 
-export interface TextInputStructure extends InputStructureBase {
-	type: 'text';
+export interface TextInputStructure extends InputStructureGlobals<'text'> {
 	multiline?: boolean;
 }
 
@@ -40,12 +39,12 @@ const useStyles = createUseStyles(
 	{ theming }
 );
 
-const TextInput: React.FC<TextInputProps> = ({ name, multiline, fullWidth, onChange }) => {
+const TextInput: React.FC<TextInputProps> = ({ label, multiline, fullWidth, onChange }) => {
 	const classes = useStyles();
-	const id = `${name}-input`;
+	const id = `${label}-input`;
 
 	return (
-		<InputBase name={name} inputId={id} fullWidth={fullWidth}>
+		<InputBase label={label} inputId={id} fullWidth={fullWidth}>
 			{multiline ? (
 				<textarea
 					id={id}

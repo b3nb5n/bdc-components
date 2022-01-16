@@ -6,17 +6,24 @@ import TextInput, { TextInputStructure } from './variants/text/text-input';
 
 export type InputType = 'text' | 'option' | 'date' | 'file';
 
-export interface InputStructureBase {
-	name: string;
-	type: InputType;
+export interface InputStructureGlobals<T extends InputType = InputType> {
+	type: T;
+	label?: string;
+	initialValue?: InitialValue<InputStructure<T>>;
 	required?: boolean;
+	validate?: (value: InputValue<InputStructure<T>>) => string | undefined;
+	onChange?: (value: InputValue<InputStructure<T>>) => any;
 }
 
-export type InputStructure =
-	| TextInputStructure
-	| OptionInputStructure
-	| DateInputStructure
-	| FileInputStructure;
+export type InputStructure<T extends InputType = InputType> = T extends 'text'
+	? TextInputStructure
+	: T extends 'option'
+	? OptionInputStructure
+	: T extends 'date'
+	? DateInputStructure
+	: T extends 'file'
+	? FileInputStructure
+	: never;
 
 export type InputValue<T extends InputStructure = InputStructure> =
 	T extends TextInputStructure & { required: true }
@@ -37,11 +44,15 @@ export type InputValue<T extends InputStructure = InputStructure> =
 		? File
 		: T extends FileInputStructure
 		? File | undefined
-		: null;
+		: never;
+
+export type InitialValue<T extends InputStructure = InputStructure> = NonNullable<
+	InputValue<T>
+>;
 
 export type InputProps<T extends InputStructure = InputStructure> = T & {
+	label: string;
 	fullWidth?: boolean;
-	onChange?: (value: InputValue<T>) => void;
 };
 
 const Input: React.FC<InputProps> = (props) => {
