@@ -27,3 +27,10 @@ ManagedButton.args = {
 	loading: false,
 	onClick: () => new Promise((resolve) => setTimeout(resolve, 1000)),
 };
+
+export const SecondaryButton: Story<ButtonProps> = (args) => <Button {...args} />;
+
+SecondaryButton.args = {
+	label: 'Secondary',
+	variant: 'secondary',
+};

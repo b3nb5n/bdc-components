@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Button from '../button';
 import Input, { InitialValue, InputStructure, InputValue } from '../input';
+import Text from '../text';
 
 export type FormStructure = {
 	[key: string]: InputStructure;
@@ -14,10 +15,14 @@ type InitialFormValues<T extends FormStructure = FormStructure> = {
 	[k in keyof T]?: InitialValue<T[k]>;
 };
 
+type InputErrors<T extends FormStructure = FormStructure> = {
+	[k in keyof T]?: string;
+};
+
 export interface FormProps<T extends FormStructure = FormStructure> {
 	structure: T;
 	initialValues?: InitialFormValues<T>;
-	validate?: (values: Partial<FormValues<T>>) => string | undefined;
+	validate?: (values: Partial<FormValues<T>>) => string | void | undefined;
 	onSubmit?: (values: FormValues<T>) => any;
 }
 
@@ -34,41 +39,61 @@ const Form = <T extends FormStructure>({
 		setValues(newValues);
 	};
 
+	const [inputErrors, setInputErrors] = useState<InputErrors<T>>({});
+	const [globalError, setGlobalError] = useState<string>();
+
 	const inputs = Object.keys(structure).map((inputId) => {
 		const inputStructure = structure[inputId];
-		const label = inputStructure.label ?? inputId;
+		const errorMessage = inputErrors[inputId];
+		const { label, required, validate, onChange } = inputStructure;
+		const fieldName = label ?? inputId;
 
 		const handleChange = (value: InputValue) => {
 			setValue(inputId, value as InputValue<T[typeof inputId]>);
-			const { onChange } = inputStructure;
 			// @ts-ignore
 			if (onChange) onChange(value);
+			// only individually validate if there is already an error on the field
+			if (errorMessage) {
+				// TODO: extract field validation
+			}
 		};
 
-		return <Input {...inputStructure} label={label} onChange={handleChange} key={inputId} />;
+		return (
+			<Input
+				{...inputStructure}
+				label={fieldName}
+				helpText={errorMessage}
+				error={!!errorMessage}
+				onChange={handleChange}
+				key={inputId}
+			/>
+		);
 	});
 
-	const handleSubmit = () => {
-		const globalError = validate ? validate(values) : undefined;
-		const inputErrors: { [k in keyof T]?: string } = {};
-
-		Object.keys(structure).forEach((inputId: keyof T) => {
+	const handleSubmit = async () => {
+		const newGlobalError = validate ? validate(values) : undefined;
+		const newInputErrors = Object.keys(structure).reduce<InputErrors>((errors, inputId) => {
 			const { validate, required } = structure[inputId];
-			const inputValue = values[inputId];
-
-			if (required && !inputValue) inputErrors[inputId] = 'required';
+			const value = values[inputId];
 			// @ts-ignore
-			if (validate) inputErrors[inputId] = validate(inputValue);
-		});
+			if (validate) errors[inputId] = validate(value);
+			if (required && !value) errors[inputId] = 'required';
+			return errors;
+		}, {});
 
-		if (globalError || Object.entries(inputErrors).length || !onSubmit) return;
-		onSubmit(values as FormValues<T>);
+		setGlobalError(newGlobalError ?? undefined);
+		setInputErrors(newInputErrors);
+
+		const hasInputErrors = Object.values(newInputErrors).reduce((a, b) => a || !!b, false);
+		if (newGlobalError || hasInputErrors) return;
+		if (onSubmit) await onSubmit(values as FormValues<T>);
 	};
 
 	return (
 		<form style={{ width: 'fit-content' }} onSubmit={(e) => e.preventDefault()}>
 			{inputs}
-			<Button label='Submit' onClick={handleSubmit} fullWidth />
+			<Button label='Submit' onClick={handleSubmit} manageLoading fullWidth />
+			{globalError && <Text variant='body'>{globalError}</Text>}
 		</form>
 	);
 };

@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { InputProps, InputStructureGlobals } from '../..';
-import { theming } from '../../../../theme';
+import { theming, useTheme } from '../../../../theme';
 import InputBase from '../input-base';
 
 export interface TextInputStructure extends InputStructureGlobals<'text'> {
@@ -39,25 +39,30 @@ const useStyles = createUseStyles(
 	{ theming }
 );
 
-const TextInput: React.FC<TextInputProps> = ({ label, multiline, fullWidth, onChange }) => {
+const TextInput: React.FC<TextInputProps> = (props) => {
+	const { label, id, multiline, error, fullWidth, onChange } = props;
+	const theme = useTheme();
 	const classes = useStyles();
-	const id = `${label}-input`;
+	const inputId = id ?? `${label}-input`;
 
 	return (
-		<InputBase label={label} inputId={id} fullWidth={fullWidth}>
+		<InputBase {...props} id={inputId}>
 			{multiline ? (
 				<textarea
-					id={id}
+					id={inputId}
 					className={`${classes.textInput} ${classes.multiline}`}
 					style={{ minWidth: fullWidth ? '100%' : undefined }}
 					onChange={(e) => onChange && onChange(e.target.value)}
 				/>
 			) : (
 				<input
-					id={id}
+					id={inputId}
 					type='text'
 					className={classes.textInput}
-					style={{ minWidth: fullWidth ? '100%' : undefined }}
+					style={{
+						minWidth: fullWidth ? '100%' : undefined,
+						borderColor: error ? theme.color.error.toString() : undefined,
+					}}
 					onChange={(e) => onChange && onChange(e.target.value)}
 				/>
 			)}

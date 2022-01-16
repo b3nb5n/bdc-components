@@ -4,16 +4,18 @@ import { TypographyTheme } from '../../theme/properties/typography';
 
 export interface TextProps {
 	variant: keyof Omit<TypographyTheme, 'fontFamily' | 'heading'>;
+	style?: React.CSSProperties;
 }
 
-const Text: React.FC<TextProps> = ({ variant, children }) => {
+const Text: React.FC<TextProps> = ({ variant, children, style }) => {
 	// useTheme().typography[variant];
-	const style: React.CSSProperties = {
+	style = {
 		...useTheme().typography[variant],
-		margin: 0,
+		boxSizing: 'border-box',
 		verticalAlign: 'middle',
 		display: 'block',
-		boxSizing: 'border-box',
+		margin: 0,
+		...style,
 	};
 
 	switch (variant) {

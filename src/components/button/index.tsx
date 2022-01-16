@@ -9,6 +9,7 @@ export interface ButtonProps {
 	loading?: boolean;
 	manageLoading?: boolean;
 	fullWidth?: boolean;
+	variant?: 'primary' | 'secondary';
 	onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -18,17 +19,16 @@ const useStyles = createUseStyles(
 			boxSizing: 'border-box',
 			outline: 'none',
 			border: 'none',
-			padding: ['0.5rem', '1.5rem'],
-			backgroundColor: theme.color.primary.toString(),
-			color: theme.color.primary.getContrastText().toString(),
+			fontSize: theme.typography.button.fontSize,
+			padding: ['0.5em', '1.5em'],
 			cursor: 'pointer',
 			borderRadius: theme.shape.borderRadius,
+			backgroundColor: 'transparent',
 			transform: 'translateY(0)',
 			boxShadow: [0, 2, 4, 0, 'rgba(0, 0, 0, 50%)'],
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center',
-			...theme.typography.button,
 			transition: [
 				['box-shadow', `${120 / theme.motion.animationSpeed}ms`, 'ease'],
 				['transform', `${120 / theme.motion.animationSpeed}ms`, 'ease'],
@@ -48,6 +48,15 @@ const useStyles = createUseStyles(
 					[0, 0, 0, 4, theme.color.primary.toString()],
 				],
 			},
+			'&.primary': {
+				backgroundColor: theme.color.primary.toString(),
+				color: theme.color.primary.getContrastText().toString(),
+			},
+			'&.secondary': {
+				border: '2px solid black',
+				padding: ['calc(0.5em - 2px)', 'calc(1.5em - 2px)'],
+				color: theme.color.primary.toString(),
+			},
 		},
 	}),
 	{ theming }
@@ -57,6 +66,7 @@ const Button: React.FC<ButtonProps> = ({
 	label,
 	loading,
 	manageLoading,
+	variant = 'primary',
 	fullWidth,
 	onClick,
 }) => {
@@ -76,7 +86,7 @@ const Button: React.FC<ButtonProps> = ({
 	return (
 		<button
 			onClick={handleClick}
-			className={classes.button}
+			className={`${classes.button} ${variant}`}
 			style={{
 				pointerEvents: loading ? 'none' : 'initial',
 				width: fullWidth ? '100%' : 'initial',

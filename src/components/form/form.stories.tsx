@@ -11,8 +11,14 @@ export const Default: Story<FormProps> = (args) => <Form {...args} />;
 
 Default.args = {
 	structure: {
-		name: { type: 'text' },
-		email: { type: 'text' },
-		// birthday: { type: 'date' },
+		name: { type: 'text', required: true },
+		email: {
+			type: 'text',
+			required: true,
+			validate: (value) => {
+				if (!/^\w+@\w+\.\w+$/.test(value)) return 'invalid email';
+			},
+		},
 	},
+	onSubmit: () => new Promise((resolve) => setTimeout(resolve, 2000)),
 };

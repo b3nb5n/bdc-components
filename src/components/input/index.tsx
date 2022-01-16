@@ -10,6 +10,7 @@ export interface InputStructureGlobals<T extends InputType = InputType> {
 	type: T;
 	label?: string;
 	initialValue?: InitialValue<InputStructure<T>>;
+	helpText?: string;
 	required?: boolean;
 	validate?: (value: InputValue<InputStructure<T>>) => string | undefined;
 	onChange?: (value: InputValue<InputStructure<T>>) => any;
@@ -52,6 +53,8 @@ export type InitialValue<T extends InputStructure = InputStructure> = NonNullabl
 
 export type InputProps<T extends InputStructure = InputStructure> = T & {
 	label: string;
+	id?: string;
+	error?: boolean;
 	fullWidth?: boolean;
 };
 
