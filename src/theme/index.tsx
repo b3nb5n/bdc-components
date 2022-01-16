@@ -1,5 +1,6 @@
 import React from 'react';
 import { createTheming } from 'react-jss';
+import DeepPartial from '../types/deep-partial';
 import { ColorTheme, createColorTheme, defaultColorTheme } from './properties/color';
 import { createMotionTheme, defaultMotionTheme } from './properties/motion';
 import { createShapeTheme, defaultShapeTheme } from './properties/shape';

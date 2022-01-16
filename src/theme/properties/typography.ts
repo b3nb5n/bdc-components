@@ -1,3 +1,6 @@
+import Css from '../../types/css';
+import DeepPartial from '../../types/deep-partial';
+
 interface TypographyRule {
 	fontFamily: string | Css.GlobalValue;
 	fontSize: Css.NumericValue<Css.Unit.Size> | Css.GlobalValue;

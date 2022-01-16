@@ -17,7 +17,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"start": "start-storybook -p 6006",
-		"build": "tsc",
+		"build": "rm -rf dist && tsc",
 		"build:storybook": "build-storybook",
 		"prepublish": "npm run build && npm run build:storybook",
 		"publish": "npm publish dist"

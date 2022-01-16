@@ -17,7 +17,6 @@ const useStyles = createUseStyles(
 	(theme) => ({
 		button: {
 			boxSizing: 'border-box',
-			outline: 'none',
 			border: 'none',
 			fontSize: theme.typography.button.fontSize,
 			padding: ['0.5em', '1.5em'],
@@ -42,11 +41,8 @@ const useStyles = createUseStyles(
 				boxShadow: 'none',
 			},
 			'&:focus-visible': {
-				boxShadow: [
-					[0, 4, 6, 0, 'rgba(0, 0, 0, 30%)'],
-					[0, 0, 0, 2, theme.color.background.toString()],
-					[0, 0, 0, 4, theme.color.primary.toString()],
-				],
+				outline: [2, 'solid', theme.color.primary.toString()],
+				outlineOffset: 2,
 			},
 			'&.primary': {
 				backgroundColor: theme.color.primary.toString(),
