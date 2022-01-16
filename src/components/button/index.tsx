@@ -40,6 +40,13 @@ const useStyles = createUseStyles(
 				transform: 'translateY(0)',
 				boxShadow: 'none',
 			},
+			'&:focus-visible': {
+				boxShadow: [
+					[0, 4, 6, 0, 'rgba(0, 0, 0, 30%)'],
+					[0, 0, 0, 2, theme.color.background.toString()],
+					[0, 0, 0, 4, theme.color.primary.toString()],
+				],
+			},
 		},
 	}),
 	{ theming }
