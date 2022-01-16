@@ -1,5 +1,3 @@
-import { merge } from 'lodash';
-
 interface TypographyRule {
 	fontFamily: string | Css.GlobalValue;
 	fontSize: Css.NumericValue<Css.Unit.Size> | Css.GlobalValue;
@@ -25,7 +23,7 @@ const defaultTypographyRule: TypographyRule = {
 	fontSize: '16px',
 	fontWeight: 'normal',
 	fontStyle: 'normal',
-	lineHeight: 1.5,
+	lineHeight: 1.2,
 	textTransform: 'none',
 };
 
@@ -44,36 +42,50 @@ export interface TypographyTheme {
 export const defaultTypographyTheme: TypographyTheme = {
 	fontFamily: '"Helvetica", "Arial", sans-serif',
 	heading: defaultTypographyRule,
-	h1: defaultTypographyRule,
-	h2: defaultTypographyRule,
+	h1: {
+		...defaultTypographyRule,
+		fontWeight: 800,
+		fontSize: '3rem',
+		textTransform: 'capitalize',
+	},
+	h2: {
+		...defaultTypographyRule,
+		fontSize: '2.5rem',
+		fontWeight: 800,
+		textTransform: 'capitalize',
+	},
 	h3: defaultTypographyRule,
 	h4: defaultTypographyRule,
-	body: defaultTypographyRule,
-	label: defaultTypographyRule,
+	body: {
+		...defaultTypographyRule,
+		lineHeight: 1.6,
+	},
+	label: {
+		...defaultTypographyRule,
+		textTransform: 'capitalize',
+	},
 	button: {
-		fontFamily: '"Helvetica", "Arial", sans-serif',
-		fontSize: '16px',
-		fontStyle: 'normal',
+		...defaultTypographyRule,
 		fontWeight: 600,
-		lineHeight: 1.2,
 		textTransform: 'capitalize',
 	},
 };
 
-export const createTypographyTheme = (theme: DeepPartial<TypographyTheme>): TypographyTheme => {
-	const resultTheme: TypographyTheme = merge({ ...defaultTypographyTheme }, theme);
-
-	// Font family inheritence
+export const createTypographyTheme = (
+	theme?: DeepPartial<TypographyTheme>
+): TypographyTheme => {
+	if (!theme) return defaultTypographyTheme;
 	const fontFamily = theme.fontFamily ?? defaultTypographyTheme.fontFamily;
-	const headingFontFamily = theme.heading?.fontFamily ?? fontFamily;
-	resultTheme.heading.fontFamily = headingFontFamily;
-	resultTheme.h1.fontFamily = theme.h1?.fontFamily ?? headingFontFamily;
-	resultTheme.h2.fontFamily = theme.h2?.fontFamily ?? headingFontFamily;
-	resultTheme.h3.fontFamily = theme.h3?.fontFamily ?? headingFontFamily;
-	resultTheme.h4.fontFamily = theme.h4?.fontFamily ?? headingFontFamily;
-	resultTheme.body.fontFamily = theme.body?.fontFamily ?? fontFamily;
-	resultTheme.label.fontFamily = theme.label?.fontFamily ?? fontFamily;
-	resultTheme.button.fontFamily = theme.button?.fontFamily ?? fontFamily;
 
-	return resultTheme;
+	return {
+		fontFamily,
+		heading: { ...defaultTypographyTheme.heading, fontFamily, ...theme.heading },
+		h1: { ...defaultTypographyTheme.h1, fontFamily, ...theme.heading, ...theme.h1 },
+		h2: { ...defaultTypographyTheme.h2, fontFamily, ...theme.heading, ...theme.h2 },
+		h3: { ...defaultTypographyTheme.h3, fontFamily, ...theme.heading, ...theme.h3 },
+		h4: { ...defaultTypographyTheme.h4, fontFamily, ...theme.heading, ...theme.h4 },
+		body: { ...defaultTypographyTheme.body, fontFamily, ...theme.body },
+		label: { ...defaultTypographyTheme.label, fontFamily, ...theme.label },
+		button: { ...defaultTypographyTheme.button, fontFamily, ...theme.button },
+	};
 };

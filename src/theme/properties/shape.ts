@@ -9,3 +9,8 @@ export const defaultShapeTheme: ShapeTheme = {
 	density: 1,
 	size: 1,
 };
+
+export const createShapeTheme = (theme?: Partial<ShapeTheme>) => {
+	if (!theme) return defaultShapeTheme;
+	return { ...defaultShapeTheme, ...theme };
+};

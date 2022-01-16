@@ -22,7 +22,8 @@ export class Color {
 	}
 
 	static fromHex(hex: string) {
-		hex = hex.toUpperCase();
+		const validator = /^#?(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})$/i;
+		if (!validator.test(hex)) throw Error('Invalid hex format');
 		if (hex[0] === '#') hex = hex.substring(1);
 
 		let r: number,
@@ -30,21 +31,12 @@ export class Color {
 			b: number,
 			a = 255;
 
-		if (/^[0-9A-Z]{3}$/.test(hex)) {
-			r = parseInt(hex.substring(0, 1), 16);
-			g = parseInt(hex.substring(1, 2), 16);
-			b = parseInt(hex.substring(2, 3), 16);
-		} else if (/^[0-9A-Z]{6}$/.test(hex)) {
-			r = parseInt(hex.substring(0, 2), 16);
-			g = parseInt(hex.substring(2, 4), 16);
-			b = parseInt(hex.substring(4, 6), 16);
-		} else if (/^[0-9A-Z]{8}$/.test(hex)) {
-			r = parseInt(hex.substring(0, 2), 16);
-			g = parseInt(hex.substring(2, 4), 16);
-			b = parseInt(hex.substring(4, 6), 16);
-			a = parseInt(hex.substring(6, 8), 16);
+		if (hex.length === 3) {
+			[r, g, b] = hex.split('').map((digit) => parseInt(digit.repeat(2), 16));
+		} else if (hex.length === 6) {
+			[r, g, b] = hex.match(/.{2}/g)!.map((digit) => parseInt(digit, 16));
 		} else {
-			throw Error('Invalid hex format');
+			[r, g, b, a] = hex.match(/.{2}/g)!.map((digit) => parseInt(digit, 16));
 		}
 
 		return new Color(r, g, b, a);
@@ -87,4 +79,9 @@ export const defaultColorTheme: ColorTheme = {
 	background: Color.fromHex('#FFF'),
 	error: Color.fromHex('#F00'),
 	inactive: Color.fromHex('#CCC'),
+};
+
+export const createColorTheme = (theme?: Partial<ColorTheme>) => {
+	if (!theme) return defaultColorTheme;
+	return { ...defaultColorTheme, ...theme };
 };
