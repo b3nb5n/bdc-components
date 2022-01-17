@@ -1,4 +1,3 @@
-import { merge } from 'lodash';
 import React from 'react';
 import CircularProgress from './variants/circular';
 
@@ -9,12 +8,10 @@ export interface ProgressProps {
 
 export type ProgressVariantProps = Required<Omit<ProgressProps, 'type'>>;
 
-const defaultProgressVariantProps: ProgressVariantProps = {
-	color: 'primary',
-};
-
 const Progress: React.FC<ProgressProps> = (props) => {
-	const variantProps = merge({ ...defaultProgressVariantProps }, props);
+	const variantProps: ProgressVariantProps = {
+		color: props.color ?? 'primary',
+	};
 
 	switch (props.type) {
 		case 'circular':

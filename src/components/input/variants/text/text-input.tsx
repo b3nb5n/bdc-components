@@ -1,33 +1,35 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { InputProps, InputStructureGlobals } from '../..';
+import { GlobalInputProps } from '../..';
 import { theming, useTheme } from '../../../../theme';
 import InputBase from '../input-base';
 
-export interface TextInputStructure extends InputStructureGlobals<'text'> {
+export interface TextInputProps extends GlobalInputProps<'text'> {
+	type: 'text';
 	multiline?: boolean;
 }
-
-export type TextInputProps = Omit<InputProps<TextInputStructure>, 'type'>;
 
 const useStyles = createUseStyles(
 	(theme) => ({
 		textInput: {
 			boxSizing: 'border-box',
-			border: `1px solid ${theme.color.inactive.toString()}`,
-			borderRadius: theme.shape.borderRadius,
-			outline: 'none',
+			width: '100%',
 			padding: [8, 12],
-			width: '36ch',
-			minWidth: '24ch',
-			maxWidth: 'min(56ch, 100%)',
+			border: 'none',
+			outlineOffset: -1,
+			outline: `1px solid ${theme.color.inactive.toString()}`,
+			borderRadius: theme.shape.borderRadius,
+			transition: [
+				['box-shadow', '120ms', 'ease'],
+				['outline-color', '120ms', 'ease'],
+			],
 			'&:hover': {
-				borderColor: theme.color.primary.toString(),
+				outlineColor: theme.color.primary.toString(),
 				boxShadow: [0, 2, 4, 0, 'rgba(0, 0, 0, 20%)'],
 			},
 			'&:focus': {
-				padding: [7, 11],
-				border: `2px solid ${theme.color.primary}`,
+				outlineOffset: -2,
+				outline: `2px solid ${theme.color.primary}`,
 				boxShadow: [0, 2, 4, 0, 'rgba(0, 0, 0, 20%)'],
 			},
 		},
@@ -61,7 +63,7 @@ const TextInput: React.FC<TextInputProps> = (props) => {
 					className={classes.textInput}
 					style={{
 						minWidth: fullWidth ? '100%' : undefined,
-						borderColor: error ? theme.color.error.toString() : undefined,
+						outlineColor: error ? theme.color.error.toString() : undefined,
 					}}
 					onChange={(e) => onChange && onChange(e.target.value)}
 				/>

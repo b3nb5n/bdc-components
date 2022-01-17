@@ -8,7 +8,6 @@ export interface TextProps {
 }
 
 const Text: React.FC<TextProps> = ({ variant, children, style }) => {
-	// useTheme().typography[variant];
 	style = {
 		...useTheme().typography[variant],
 		boxSizing: 'border-box',

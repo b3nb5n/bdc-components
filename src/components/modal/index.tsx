@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
-import { Button } from '..';
 import { theming } from '../../theme';
+import Button from '../button';
 import Text from '../text';
 
 export interface ModalProps {

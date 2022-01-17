@@ -1,18 +1,15 @@
 import React, { useState } from 'react';
+import { useTheme } from '../../theme';
 import Button from '../button';
-import Input, { InitialValue, InputStructure, InputValue } from '../input';
+import Input, { InputProps, InputValue } from '../input';
 import Text from '../text';
 
 export type FormStructure = {
-	[key: string]: InputStructure;
+	[key: string]: InputProps;
 };
 
 export type FormValues<T extends FormStructure = FormStructure> = {
-	[k in keyof T]: InputValue<T[k]>;
-};
-
-type InitialFormValues<T extends FormStructure = FormStructure> = {
-	[k in keyof T]?: InitialValue<T[k]>;
+	[k in keyof T]: InputValue<T[k]['type']>;
 };
 
 type InputErrors<T extends FormStructure = FormStructure> = {
@@ -21,8 +18,8 @@ type InputErrors<T extends FormStructure = FormStructure> = {
 
 export interface FormProps<T extends FormStructure = FormStructure> {
 	structure: T;
-	initialValues?: InitialFormValues<T>;
-	validate?: (values: Partial<FormValues<T>>) => string | void | undefined;
+	initialValues?: Partial<FormValues<T>>;
+	validate?: (values: Partial<FormValues<T>>) => string | undefined;
 	onSubmit?: (values: FormValues<T>) => any;
 }
 
@@ -32,68 +29,91 @@ const Form = <T extends FormStructure>({
 	validate,
 	onSubmit,
 }: FormProps<T>) => {
+	const theme = useTheme();
+
 	const [values, setValues] = useState<Partial<FormValues<T>>>(initialValues ?? {});
-	const setValue = <K extends keyof T>(inputId: K, value: InputValue<T[K]>) => {
-		const newValues = values;
-		newValues[inputId] = value;
-		setValues(newValues);
-	};
+	const setValue = (inputId: keyof T, value: InputValue) =>
+		setValues({ ...values, [inputId]: value });
 
 	const [inputErrors, setInputErrors] = useState<InputErrors<T>>({});
 	const [globalError, setGlobalError] = useState<string>();
 
-	const inputs = Object.keys(structure).map((inputId) => {
-		const inputStructure = structure[inputId];
+	const validateField = (inputId: keyof T) => {
+		const { validate, required } = structure[inputId];
+		const value = values[inputId];
+
+		if (required && !value) return 'required';
+		// @ts-ignore
+		if (validate) return validate(value);
+		return undefined;
+	};
+
+	const inputs = Object.entries(structure).map((inputEntry) => {
+		const [inputId, inputProps] = inputEntry;
 		const errorMessage = inputErrors[inputId];
-		const { label, required, validate, onChange } = inputStructure;
+		const { label, onChange } = inputProps;
 		const fieldName = label ?? inputId;
 
 		const handleChange = (value: InputValue) => {
-			setValue(inputId, value as InputValue<T[typeof inputId]>);
+			setValue(inputId, value);
 			// @ts-ignore
 			if (onChange) onChange(value);
-			// only individually validate if there is already an error on the field
 			if (errorMessage) {
-				// TODO: extract field validation
+				const newErrors = { ...inputErrors, [inputId]: validateField(inputId) };
+				if (newErrors[inputId] !== errorMessage) setInputErrors(newErrors);
 			}
 		};
 
 		return (
 			<Input
-				{...inputStructure}
+				{...inputProps}
+				key={inputId}
 				label={fieldName}
 				helpText={errorMessage}
 				error={!!errorMessage}
 				onChange={handleChange}
-				key={inputId}
+				fullWidth
 			/>
 		);
 	});
 
 	const handleSubmit = async () => {
 		const newGlobalError = validate ? validate(values) : undefined;
-		const newInputErrors = Object.keys(structure).reduce<InputErrors>((errors, inputId) => {
-			const { validate, required } = structure[inputId];
-			const value = values[inputId];
-			// @ts-ignore
-			if (validate) errors[inputId] = validate(value);
-			if (required && !value) errors[inputId] = 'required';
-			return errors;
-		}, {});
+		const newInputErrors = Object.keys(structure).reduce<InputErrors<T>>(
+			(errors, inputId) => ({ ...errors, [inputId]: validateField(inputId) }),
+			{}
+		);
 
-		setGlobalError(newGlobalError ?? undefined);
+		setGlobalError(newGlobalError);
 		setInputErrors(newInputErrors);
 
+		const hasGlobalError = newGlobalError && newGlobalError.length > 0;
 		const hasInputErrors = Object.values(newInputErrors).reduce((a, b) => a || !!b, false);
-		if (newGlobalError || hasInputErrors) return;
+		if (hasGlobalError || hasInputErrors) return;
 		if (onSubmit) await onSubmit(values as FormValues<T>);
 	};
 
 	return (
-		<form style={{ width: 'fit-content' }} onSubmit={(e) => e.preventDefault()}>
+		<form style={{ width: '36ch' }} onSubmit={(e) => e.preventDefault()}>
 			{inputs}
-			<Button label='Submit' onClick={handleSubmit} manageLoading fullWidth />
-			{globalError && <Text variant='body'>{globalError}</Text>}
+			<Button
+				label='Submit'
+				onClick={handleSubmit}
+				style={{ marginBottom: 4 }}
+				manageLoading
+				fullWidth
+			/>
+			{globalError && (
+				<Text
+					variant='body'
+					style={{
+						color: theme.color.error.toString(),
+						marginLeft: theme.shape.borderRadius + 4,
+					}}
+				>
+					{globalError}
+				</Text>
+			)}
 		</form>
 	);
 };

@@ -17,14 +17,17 @@ const InputBase: React.FC<Omit<InputProps, 'type'>> = ({
 		<div
 			style={{
 				boxSizing: 'border-box',
-				width: fullWidth ? '100%' : 'fit-content',
-				marginBottom: theme.shape.density * 6,
+				width: fullWidth ? '100%' : '36ch',
+				minWidth: '24ch',
+				maxWidth: fullWidth ? '100%' : 'min(56ch, 100%)',
+				marginBottom: theme.shape.density * (helpText ? 10 : 6),
+				caretColor: error ? theme.color.error.toString() : undefined,
 			}}
 		>
 			<Text
 				variant='label'
 				style={{
-					marginLeft: theme.shape.borderRadius,
+					marginLeft: theme.shape.borderRadius + 4,
 					maxWidth: '100%',
 					whiteSpace: 'nowrap',
 					textOverflow: 'ellipsis',
@@ -42,7 +45,7 @@ const InputBase: React.FC<Omit<InputProps, 'type'>> = ({
 					style={{
 						fontSize: 10,
 						marginTop: 1,
-						marginLeft: theme.shape.borderRadius * 2,
+						marginLeft: theme.shape.borderRadius + 4,
 						color: error ? theme.color.error.toString() : undefined,
 					}}
 				>

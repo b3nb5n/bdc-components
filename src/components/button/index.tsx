@@ -10,6 +10,7 @@ export interface ButtonProps {
 	manageLoading?: boolean;
 	fullWidth?: boolean;
 	variant?: 'primary' | 'secondary';
+	style?: React.CSSProperties;
 	onClick?: MouseEventHandler<HTMLButtonElement>;
 }
 
@@ -63,6 +64,7 @@ const Button: React.FC<ButtonProps> = ({
 	loading,
 	manageLoading,
 	variant = 'primary',
+	style,
 	fullWidth,
 	onClick,
 }) => {
@@ -86,6 +88,7 @@ const Button: React.FC<ButtonProps> = ({
 			style={{
 				pointerEvents: loading ? 'none' : 'initial',
 				width: fullWidth ? '100%' : 'initial',
+				...style,
 			}}
 		>
 			<div style={{ opacity: loading ? 0 : 1 }}>

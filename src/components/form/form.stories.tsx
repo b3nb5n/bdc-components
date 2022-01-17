@@ -21,4 +21,5 @@ Default.args = {
 		},
 	},
 	onSubmit: () => new Promise((resolve) => setTimeout(resolve, 2000)),
+	validate: () => 'Global error message lorem ipsum doler sit amet consectetur',
 };

@@ -1,9 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import Input, { InputProps } from '.';
-import DateInput, { DateInputProps } from './variants/date/date-input';
-import FileInput, { FileInputProps } from './variants/file/file-input';
-import OptionInput, { OptionInputProps } from './variants/option/option-input';
+import NumberInput, { NumberInputProps } from './variants/number';
 import TextInput, { TextInputProps } from './variants/text/text-input';
 
 export default {
@@ -31,33 +29,6 @@ TextInputStory.args = {
 	fullWidth: false,
 };
 
-export const OptionInputStory: Story<OptionInputProps> = (args) => <OptionInput {...args} />;
+export const NumberInputStory: Story<NumberInputProps> = (args) => <NumberInput {...args} />;
 
-OptionInputStory.storyName = 'Option Input';
-
-OptionInputStory.args = {
-	label: 'Option Input',
-	options: ['red', 'orange', 'yellow', 'green', 'blue', 'purple'],
-	multi: false,
-};
-
-OptionInputStory.argTypes = {
-	required: { type: 'boolean' },
-	filter: { type: 'function' },
-};
-
-export const DateInputStory: Story<DateInputProps> = (args) => <DateInput {...args} />;
-
-DateInputStory.storyName = 'Date Input';
-
-DateInputStory.args = {
-	label: 'Date Input',
-};
-
-export const FileInputStory: Story<FileInputProps> = (args) => <FileInput {...args} />;
-
-FileInputStory.storyName = 'File Input';
-
-FileInputStory.args = {
-	label: 'File Input',
-};
+NumberInputStory.storyName = 'Number Input';
