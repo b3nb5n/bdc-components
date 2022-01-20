@@ -29,18 +29,15 @@ const Form = <T extends FormStructure>({
 	validate,
 	onSubmit,
 }: FormProps<T>) => {
-	const theme = useTheme();
-
 	const [values, setValues] = useState<Partial<FormValues<T>>>(initialValues ?? {});
-	const setValue = (inputId: keyof T, value: InputValue) =>
-		setValues({ ...values, [inputId]: value });
-
 	const [inputErrors, setInputErrors] = useState<InputErrors<T>>({});
 	const [globalError, setGlobalError] = useState<string>();
+	const theme = useTheme();
 
-	const validateField = (inputId: keyof T) => {
+	// If a value is not provided it is retrieved from the form values
+	const validateField = (inputId: keyof T, value?: InputValue) => {
 		const { validate, required } = structure[inputId];
-		const value = values[inputId];
+		value ??= values[inputId];
 
 		if (required && !value) return 'required';
 		// @ts-ignore
@@ -50,18 +47,20 @@ const Form = <T extends FormStructure>({
 
 	const inputs = Object.entries(structure).map((inputEntry) => {
 		const [inputId, inputProps] = inputEntry;
-		const errorMessage = inputErrors[inputId];
-		const { label, onChange } = inputProps;
+		const { label } = inputProps;
 		const fieldName = label ?? inputId;
+		const errorMessage = inputErrors[inputId];
 
 		const handleChange = (value: InputValue) => {
-			setValue(inputId, value);
+			const { onChange } = inputProps;
 			// @ts-ignore
 			if (onChange) onChange(value);
+			// if a field already has an error validate it individually
 			if (errorMessage) {
-				const newErrors = { ...inputErrors, [inputId]: validateField(inputId) };
-				if (newErrors[inputId] !== errorMessage) setInputErrors(newErrors);
+				setInputErrors({ ...inputErrors, [inputId]: validateField(inputId, value) });
 			}
+
+			setValues({ ...values, [inputId]: value });
 		};
 
 		return (
@@ -69,10 +68,8 @@ const Form = <T extends FormStructure>({
 				{...inputProps}
 				key={inputId}
 				label={fieldName}
-				helpText={errorMessage}
-				error={!!errorMessage}
+				errorMessage={errorMessage}
 				onChange={handleChange}
-				fullWidth
 			/>
 		);
 	});
@@ -94,7 +91,7 @@ const Form = <T extends FormStructure>({
 	};
 
 	return (
-		<form style={{ width: '36ch' }} onSubmit={(e) => e.preventDefault()}>
+		<form style={{ width: 'min-content' }} onSubmit={(e) => e.preventDefault()}>
 			{inputs}
 			<Button
 				label='Submit'

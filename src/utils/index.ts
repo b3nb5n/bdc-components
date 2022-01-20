@@ -1,1 +1,2 @@
-export { default as useClickAway } from './click-away';
+export { default as useClickAway } from './use-click-away';
+export { default as useId } from './use-id';

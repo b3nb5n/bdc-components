@@ -39,7 +39,7 @@ const useStyles = createUseStyles(
 			boxSizing: 'border-box',
 			width: '100%',
 			display: 'flex',
-			justifyContent: 'center',
+			// justifyContent: 'center',
 			background:
 				'linear-gradient(#fff, #fff, rgba(255, 255, 255, 90%), rgba(255, 255, 255, 20%))',
 			backdropFilter: 'blur(1px)',

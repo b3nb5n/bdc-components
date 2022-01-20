@@ -1,7 +1,7 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
 import Input, { InputProps } from '.';
-import NumberInput, { NumberInputProps } from './variants/number';
+import NumberInput, { NumberInputProps } from './variants/number/number-input';
 import TextInput, { TextInputProps } from './variants/text/text-input';
 
 export default {
@@ -32,3 +32,7 @@ TextInputStory.args = {
 export const NumberInputStory: Story<NumberInputProps> = (args) => <NumberInput {...args} />;
 
 NumberInputStory.storyName = 'Number Input';
+
+NumberInputStory.args = {
+	label: 'Number Input',
+};
