@@ -1,6 +1,5 @@
 import React from 'react';
-import NumberInput, { NumberInputProps } from './variants/number/number-input';
-import TextInput, { TextInputProps } from './variants/text/text-input';
+import TextInput, { TextInputStructure } from './variants/text/text-input';
 
 export type InputType = 'text' | 'number' | 'date';
 
@@ -32,9 +31,7 @@ export type InputValue<T extends InputType = InputType> = T extends 'text'
 	: never;
 
 export type InputProps<T extends InputType = InputType> = T extends 'text'
-	? TextInputProps
-	: T extends 'number'
-	? NumberInputProps
+	? TextInputStructure
 	: never;
 
 export const validateField = <T extends InputProps>(
@@ -51,14 +48,11 @@ const Input: React.FC<InputProps> = (props) => {
 	switch (props.type) {
 		case 'text':
 			return <TextInput {...props} />;
-		case 'number':
-			return <NumberInput {...props} />;
 		default:
 			throw TypeError('Invalid input type');
 	}
 };
 
 export default Input;
-export { default as NumberInput } from './variants/number/number-input';
 export { default as TextInput } from './variants/text/text-input';
 

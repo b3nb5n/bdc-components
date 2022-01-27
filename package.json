@@ -23,6 +23,7 @@
 		"publish": "npm publish dist"
 	},
 	"dependencies": {
+		"react-icons": "^4.3.1",
 		"react-jss": "^10.9.0"
 	},
 	"devDependencies": {

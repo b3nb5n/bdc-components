@@ -1,15 +1,15 @@
 import React from 'react';
-import { useTheme } from '../../theme';
 import { TypographyTheme } from '../../theme/properties/typography';
 
 export interface TextProps {
-	variant: keyof Omit<TypographyTheme, 'fontFamily' | 'heading'>;
+	variant?: keyof Omit<TypographyTheme, 'fontFamily' | 'heading'>;
 	style?: React.CSSProperties;
 }
 
-const Text: React.FC<TextProps> = ({ variant, children, style }) => {
+const Text: React.FC<TextProps> = ({ variant = 'body', children, style }) => {
 	style = {
-		...useTheme().typography[variant],
+		// ...useTheme().typography[variant],
+		fontFamily: '"Helvetica", sans-serif',
 		boxSizing: 'border-box',
 		verticalAlign: 'middle',
 		display: 'block',

@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useTheme } from '../../theme';
 import Button from '../button';
 import Input, { InputProps, InputValue } from '../input';
 import Text from '../text';
@@ -32,7 +31,7 @@ const Form = <T extends FormStructure>({
 	const [values, setValues] = useState<Partial<FormValues<T>>>(initialValues ?? {});
 	const [inputErrors, setInputErrors] = useState<InputErrors<T>>({});
 	const [globalError, setGlobalError] = useState<string>();
-	const theme = useTheme();
+	// const theme = useTheme();
 
 	// If a value is not provided it is retrieved from the form values
 	const validateField = (inputId: keyof T, value?: InputValue) => {
@@ -93,21 +92,11 @@ const Form = <T extends FormStructure>({
 	return (
 		<form style={{ width: 'min-content' }} onSubmit={(e) => e.preventDefault()}>
 			{inputs}
-			<Button
-				label='Submit'
-				onClick={handleSubmit}
-				style={{ marginBottom: 4 }}
-				manageLoading
-				fullWidth
-			/>
+			<Button onClick={handleSubmit} style={{ marginBottom: 4 }} manageLoading fullWidth>
+				Submit
+			</Button>
 			{globalError && (
-				<Text
-					variant='body'
-					style={{
-						color: theme.color.error.toString(),
-						marginLeft: theme.shape.borderRadius + 4,
-					}}
-				>
+				<Text variant='body' style={{ color: 'red', marginLeft: 8 }}>
 					{globalError}
 				</Text>
 			)}

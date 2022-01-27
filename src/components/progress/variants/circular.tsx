@@ -1,7 +1,6 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
 import { ProgressVariantProps } from '..';
-import { useTheme } from '../../../theme';
 
 const useStyles = createUseStyles({
 	circularProgress: {
@@ -23,20 +22,11 @@ const useStyles = createUseStyles({
 });
 
 const CircularProgress: React.FC<ProgressVariantProps> = ({ color }) => {
-	const theme = useTheme();
+	// const theme = useTheme();
 	const styles = useStyles();
-	const colorValue =
-		color === 'primary' ? theme.color.primary : theme.color.primary.getContrastText();
+	const colorValue = color === 'primary' ? 'black' : 'white';
 
-	return (
-		<div
-			className={styles.circularProgress}
-			style={{
-				borderColor: colorValue.withAlpha(0.2).toString(),
-				borderTopColor: colorValue.toString(),
-			}}
-		/>
-	);
+	return <div className={styles.circularProgress} style={{ borderTopColor: colorValue }} />;
 };
 
 export default CircularProgress;

@@ -2,10 +2,8 @@ import React, { MouseEventHandler, useState } from 'react';
 import { createUseStyles } from 'react-jss';
 import { theming, useTheme } from '../../theme';
 import CircularProgress from '../progress/variants/circular';
-import Text from '../text';
 
 export interface ButtonProps {
-	label: React.ReactNode;
 	loading?: boolean;
 	manageLoading?: boolean;
 	fullWidth?: boolean;
@@ -19,19 +17,20 @@ const useStyles = createUseStyles(
 		button: {
 			boxSizing: 'border-box',
 			border: 'none',
-			fontSize: theme.typography.button.fontSize,
-			padding: ['0.5em', '1.5em'],
+			fontSize: 16,
+			padding: [8, 24],
 			cursor: 'pointer',
-			borderRadius: theme.shape.borderRadius,
+			borderRadius: 8,
 			backgroundColor: 'transparent',
 			transform: 'translateY(0)',
 			boxShadow: [0, 2, 4, 0, 'rgba(0, 0, 0, 50%)'],
 			display: 'flex',
 			alignItems: 'center',
 			justifyContent: 'center',
+			height: 'min-content',
 			transition: [
-				['box-shadow', `${120 / theme.motion.animationSpeed}ms`, 'ease'],
-				['transform', `${120 / theme.motion.animationSpeed}ms`, 'ease'],
+				['box-shadow', `120ms`, 'ease'],
+				['transform', `120ms`, 'ease'],
 			],
 			'&:hover': {
 				transform: 'translateY(-1px)',
@@ -42,17 +41,17 @@ const useStyles = createUseStyles(
 				boxShadow: 'none',
 			},
 			'&:focus-visible': {
-				outline: [2, 'solid', theme.color.primary.toString()],
+				outline: [2, 'solid', 'black'],
 				outlineOffset: 2,
 			},
 			'&.primary': {
-				backgroundColor: theme.color.primary.toString(),
-				color: theme.color.primary.getContrastText().toString(),
+				backgroundColor: 'black',
+				color: 'white',
 			},
 			'&.secondary': {
 				border: '2px solid black',
 				padding: ['calc(0.5em - 2px)', 'calc(1.5em - 2px)'],
-				color: theme.color.primary.toString(),
+				color: 'black',
 			},
 		},
 	}),
@@ -60,13 +59,13 @@ const useStyles = createUseStyles(
 );
 
 const Button: React.FC<ButtonProps> = ({
-	label,
 	loading,
 	manageLoading,
 	variant = 'primary',
 	style,
 	fullWidth,
 	onClick,
+	children,
 }) => {
 	const [managedLoading, setManagedLoading] = useState(false);
 	loading = manageLoading ? managedLoading : loading;
@@ -91,8 +90,17 @@ const Button: React.FC<ButtonProps> = ({
 				...style,
 			}}
 		>
-			<div style={{ opacity: loading ? 0 : 1 }}>
-				<Text variant='button'>{label}</Text>
+			<div
+				style={{
+					opacity: loading ? 0 : 1,
+					width: 'fit-content',
+					height: 18,
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+				}}
+			>
+				{children}
 			</div>
 			{loading && (
 				<div

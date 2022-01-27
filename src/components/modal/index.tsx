@@ -28,12 +28,12 @@ const useStyles = createUseStyles(
 			maxWidth: 480,
 			minWidth: 360,
 			maxHeight: 'calc(100vh - 120px)',
-			backgroundColor: theme.color.background.toString(),
+			backgroundColor: 'white',
 			boxShadow: [0, 12, 12, -6, 'black'],
 			position: 'relative',
 			overflowX: 'hidden',
 			overflowY: 'auto',
-			borderRadius: theme.shape.borderRadius * 3,
+			borderRadius: 12,
 		},
 		head: {
 			boxSizing: 'border-box',
@@ -78,7 +78,7 @@ const Modal: React.FC<ModalProps> = ({ open, title, children }) => {
 				</div>
 				<div className={classes.content}>{children}</div>
 				<div className={classes.actions}>
-					<Button label='Submit' />
+					<Button>Submit</Button>
 				</div>
 			</div>
 		</div>
