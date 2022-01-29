@@ -1,4 +1,8 @@
-import { Color, createColorTheme, defaultColorTheme } from './color';
+import {
+	Color,
+	createColorTheme,
+	defaultColorTheme,
+} from '../../../src/theme/properties/color';
 
 test('Constructor should normalize channels', () => {
 	const color = new Color(5000, -100, 36.82, 0.35);
