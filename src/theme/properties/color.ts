@@ -1,69 +1,94 @@
+import Css from '../../types/css';
+
 export class Color {
-	private r: number;
-	private g: number;
-	private b: number;
-	private a: number;
+	readonly r: number;
+	readonly g: number;
+	readonly b: number;
+	readonly a: number;
 
-	private constructor(r: number, g: number, b: number, a: number) {
-		const normalize = (x: number) => Math.min(Math.max(x, 0), 255);
+	/**
+	 * @param {number} r 0-255
+	 * @param {number} g 0-255
+	 * @param {number} b 0-255
+	 * @param {number} a 0.0-1.0
+	 * @constructs Color
+	 */
+	constructor(r: number, g: number, b: number, a: number = 1) {
+		const normalize = (num: number, min: number, max: number) =>
+			Math.min(Math.max(num, min), max);
 
-		this.r = normalize(r);
-		this.g = normalize(g);
-		this.b = normalize(b);
-		this.a = normalize(a);
+		this.r = normalize(Math.round(r), 0, 255);
+		this.g = normalize(Math.round(g), 0, 255);
+		this.b = normalize(Math.round(b), 0, 255);
+		this.a = normalize(a, 0, 1);
 	}
 
-	static fromRGB(r: number, g: number, b: number) {
-		return new Color(r, g, b, 255);
-	}
+	static readonly black = new Color(0, 0, 0);
+	static readonly white = new Color(255, 255, 255);
+	static readonly transparent = new Color(0, 0, 0, 0);
 
-	static fromRGBA(r: number, g: number, b: number, a: number) {
+	/**
+	 * Constructs a new Color from a rgb or rgba string
+	 * @param {string} color rgb or rgba format color
+	 * @constructs Color
+	 * @throws Will throw if `color` is not in the expected format
+	 */
+	static fromRGBAString(color: Css.Color.RGB | Css.Color.RGBA) {
+		if (!Css.Color.isRGB(color) && !Css.Color.isRGBA(color)) throw Error('Invalid rgba format');
+		const parser = /(?:\d*\.\d+)|(?:\d+)/g;
+		const [r, g, b, a] = color.match(parser)!.map((chan) => parseFloat(chan));
 		return new Color(r, g, b, a);
 	}
 
-	static fromHex(hex: string) {
-		const validator = /^#?(?:[0-9a-f]{8}|[0-9a-f]{6}|[0-9a-f]{3})$/i;
-		if (!validator.test(hex)) throw Error('Invalid hex format');
-		if (hex[0] === '#') hex = hex.substring(1);
+	/**
+	 * Constructs a new Color from a hex string
+	 * @param {string} color hex format color
+	 * @constructs Color
+	 * @throws Will throw if `color` is not in the expected format
+	 */
+	static fromHexString(color: Css.Color.Hex) {
+		if (!Css.Color.isHex(color)) throw Error('Invalid hex format');
+		let hex = color[0] === '#' ? color.substring(1) : color;
+		if (hex.length === 3) hex = hex.split('').reduce((hex, chan) => hex + chan.repeat(2), '');
 
-		let r: number,
-			g: number,
-			b: number,
-			a = 255;
-
-		if (hex.length === 3) {
-			[r, g, b] = hex.split('').map((digit) => parseInt(digit.repeat(2), 16));
-		} else if (hex.length === 6) {
-			[r, g, b] = hex.match(/.{2}/g)!.map((digit) => parseInt(digit, 16));
-		} else {
-			[r, g, b, a] = hex.match(/.{2}/g)!.map((digit) => parseInt(digit, 16));
-		}
-
-		return new Color(r, g, b, a);
+		const parser = /[0-9a-f]{2}/gi;
+		const [r, g, b, a] = hex.match(parser)!.map((chan) => parseInt(chan, 16));
+		return new Color(r, g, b, a / 255 || 1);
 	}
 
+	/**
+	 * Constructs a new Color from a string
+	 * @param {string} color any format color
+	 * @constructs Color
+	 * @throws Will throw if `color` is not in a valid format
+	 */
+	static fromString(color: Css.Color.Any) {
+		if (Css.Color.isRGB(color) || Css.Color.isRGBA(color)) return this.fromRGBAString(color);
+		if (Css.Color.isHex(color)) return this.fromHexString(color);
+		throw Error('Invalid color format');
+	}
+
+	/**
+	 * Constructs a new Color with the current rgb values and the given a value
+	 * @param {number} a a number 0-1 to use as the new alpha
+	 * @constructs Color
+	 */
 	withAlpha(a: number) {
-		a = Math.min(Math.max(a, 0), 1);
 		return new Color(this.r, this.g, this.b, a);
 	}
 
-	getContrastText() {
+	/**
+	 * Constructs a new color (black or white) that contrasts with the current color
+	 * @constructs Color
+	 */
+	getContrastingForeground() {
 		const luminance = (this.r * 0.299 + this.g * 0.587 + this.b * 0.114) / 255;
-		const d = (1 - Math.round(luminance)) * 255;
-		return new Color(d, d, d, 255);
+		return luminance < 0.5 ? Color.white : Color.black;
 	}
 
+	/** Returns an rgba string representation of the current color */
 	toString() {
 		return `rgba(${this.r}, ${this.g}, ${this.b}, ${this.a})`;
-	}
-
-	toHexString() {
-		const rHex = this.r.toString(16),
-			bHex = this.b.toString(16),
-			gHex = this.g.toString(16),
-			aHex = this.a.toString(16);
-
-		return `#${rHex}${gHex}${bHex}${aHex !== 'ff' ? aHex : ''}`;
 	}
 }
 
@@ -75,13 +100,27 @@ export interface ColorTheme {
 }
 
 export const defaultColorTheme: ColorTheme = {
-	primary: Color.fromHex('#000'),
-	background: Color.fromHex('#FFF'),
-	error: Color.fromHex('#F00'),
-	inactive: Color.fromHex('#CCC'),
+	primary: new Color(0, 0, 0, 1),
+	background: new Color(255, 255, 255, 1),
+	error: new Color(255, 0, 0, 1),
+	inactive: new Color(200, 200, 200, 1),
 };
 
-export const createColorTheme = (theme?: Partial<ColorTheme>) => {
-	if (!theme) return defaultColorTheme;
-	return { ...defaultColorTheme, ...theme };
+export type ColorThemeData = {
+	[k in keyof ColorTheme]: Css.Color.Any | Color;
+};
+
+/**
+ * Merges `partialThemeData` with `defaultColorTheme`
+ * to create a complete color theme object
+ */
+export const createColorTheme = (partialThemeData?: Partial<ColorThemeData>): ColorTheme => {
+	const resolveColor = (color: Css.Color.Any | Color) =>
+		color instanceof Color ? color : Color.fromString(color);
+
+	const themeData = { ...defaultColorTheme, ...partialThemeData };
+	return Object.entries(themeData).reduce<ColorTheme>(
+		(theme, [key, value]) => ({ ...theme, [key]: resolveColor(value) }),
+		{} as ColorTheme
+	);
 };
