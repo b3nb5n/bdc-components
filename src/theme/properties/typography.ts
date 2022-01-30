@@ -26,7 +26,7 @@ const defaultTypographyRule: TypographyRule = {
 	fontSize: '1rem',
 	fontWeight: 'normal',
 	fontStyle: 'normal',
-	lineHeight: 1.2,
+	lineHeight: 1,
 	textTransform: 'none',
 };
 
@@ -75,17 +75,14 @@ export const defaultTypographyTheme: TypographyTheme = {
 	},
 	body: {
 		...defaultTypographyRule,
-		lineHeight: 1.6,
 	},
 	label: {
 		...defaultTypographyRule,
-		lineHeight: 1.6,
 		textTransform: 'capitalize',
 	},
 	button: {
 		...defaultTypographyRule,
 		fontWeight: 600,
-		lineHeight: 1.6,
 		textTransform: 'capitalize',
 	},
 };

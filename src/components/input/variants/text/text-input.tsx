@@ -1,7 +1,7 @@
 import React from 'react';
 import { createUseStyles } from 'react-jss';
+import useId from '../../../../hooks/use-id';
 import { theming } from '../../../../theme';
-import useId from '../../../../utils/use-id';
 import InputBase from '../input-base';
 
 type TextInputValue = string;

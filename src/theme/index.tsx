@@ -1,8 +1,6 @@
 import React from 'react';
 import { createTheming } from 'react-jss';
 import { ColorThemeData, createColorTheme, defaultColorTheme } from './properties/color';
-import { createMotionTheme, defaultMotionTheme, MotionThemeData } from './properties/motion';
-import { createShapeTheme, defaultShapeTheme, ShapeThemeData } from './properties/shape';
 import {
 	createTypographyTheme,
 	defaultTypographyTheme,
@@ -14,15 +12,11 @@ export type Theme = Jss.Theme;
 export const defaultTheme: Theme = {
 	typography: defaultTypographyTheme,
 	color: defaultColorTheme,
-	shape: defaultShapeTheme,
-	motion: defaultMotionTheme,
 };
 
 export type ThemeData = {
 	typography?: TypographyThemeData;
 	color?: ColorThemeData;
-	shape?: ShapeThemeData;
-	motion?: MotionThemeData;
 };
 
 export const createTheme = (theme?: ThemeData): Theme => {
@@ -30,8 +24,6 @@ export const createTheme = (theme?: ThemeData): Theme => {
 	return {
 		typography: createTypographyTheme(theme.typography),
 		color: createColorTheme(theme.color),
-		shape: createShapeTheme(theme.shape),
-		motion: createMotionTheme(theme.motion),
 	};
 };
 

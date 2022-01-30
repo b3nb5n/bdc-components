@@ -1,5 +1,6 @@
 import React, { MouseEventHandler, useState } from 'react';
 import { createUseStyles } from 'react-jss';
+import { Text } from '..';
 import { theming, useTheme } from '../../theme';
 import CircularProgress from '../progress/variants/circular';
 
@@ -17,10 +18,9 @@ const useStyles = createUseStyles(
 		button: {
 			boxSizing: 'border-box',
 			border: 'none',
-			fontSize: 16,
 			padding: [8, 24],
 			cursor: 'pointer',
-			borderRadius: 8,
+			borderRadius: theme.shape.borderRadius,
 			backgroundColor: 'transparent',
 			transform: 'translateY(0)',
 			boxShadow: [0, 2, 4, 0, 'rgba(0, 0, 0, 50%)'],
@@ -85,12 +85,13 @@ const Button: React.FC<ButtonProps> = ({
 			onClick={handleClick}
 			className={`${classes.button} ${variant}`}
 			style={{
-				pointerEvents: loading ? 'none' : 'initial',
-				width: fullWidth ? '100%' : 'initial',
+				pointerEvents: loading ? 'none' : undefined,
+				width: fullWidth ? '100%' : undefined,
 				...style,
 			}}
 		>
-			<div
+			<Text
+				variant='button'
 				style={{
 					opacity: loading ? 0 : 1,
 					width: 'fit-content',
@@ -101,7 +102,8 @@ const Button: React.FC<ButtonProps> = ({
 				}}
 			>
 				{children}
-			</div>
+			</Text>
+
 			{loading && (
 				<div
 					style={{
