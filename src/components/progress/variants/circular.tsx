@@ -5,8 +5,7 @@ import { ProgressVariantProps } from '..';
 const useStyles = createUseStyles({
 	circularProgress: {
 		boxSizing: 'border-box',
-		height: 24,
-		maxHeight: '100%',
+		height: 'min(24px, 100%)',
 		aspectRatio: 1,
 		border: [3, 'solid', 'transparent'],
 		borderRadius: '50%',

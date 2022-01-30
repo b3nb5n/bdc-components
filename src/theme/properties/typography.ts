@@ -10,7 +10,7 @@ interface TypographyRule {
 		| 'italic'
 		| `oblique ${Css.NumericValue<Css.Unit.Angle>}`
 		| Css.GlobalValue;
-	lineHeight: 'normal' | Css.NumericValue<Css.Unit.Size> | number | Css.GlobalValue;
+	lineHeight: 'normal' | Css.NumericValue<Css.Unit.Size> | Css.GlobalValue;
 	textTransform:
 		| 'none'
 		| 'capitalize'
@@ -26,7 +26,7 @@ const defaultTypographyRule: TypographyRule = {
 	fontSize: '1rem',
 	fontWeight: 'normal',
 	fontStyle: 'normal',
-	lineHeight: 1,
+	lineHeight: '1em',
 	textTransform: 'none',
 };
 
@@ -82,7 +82,6 @@ export const defaultTypographyTheme: TypographyTheme = {
 	},
 	button: {
 		...defaultTypographyRule,
-		fontWeight: 600,
 		textTransform: 'capitalize',
 	},
 };

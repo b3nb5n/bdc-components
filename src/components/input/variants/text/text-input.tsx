@@ -27,7 +27,6 @@ export const useStyles = createUseStyles<'inputBox' | 'textInput', TextInputProp
 			boxSizing: 'border-box',
 			minWidth: '100%',
 			border: 'none',
-			borderRadius: 8,
 			outlineWidth: 1,
 			outlineStyle: 'solid',
 			outlineColor: ({ errorMessage }) => (errorMessage ? 'red' : '#ccc'),

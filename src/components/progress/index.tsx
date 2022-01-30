@@ -1,8 +1,9 @@
 import React from 'react';
 import CircularProgress from './variants/circular';
+import EllipsisProgress from './variants/ellipsis';
 
 export interface ProgressProps {
-	type: 'linear' | 'circular';
+	type: 'linear' | 'circular' | 'ellipsis';
 	color?: 'primary' | 'onPrimary';
 }
 
@@ -14,12 +15,14 @@ const Progress: React.FC<ProgressProps> = (props) => {
 	};
 
 	switch (props.type) {
-		case 'circular':
-			return <CircularProgress {...variantProps} />;
 		case 'linear':
 			throw Error('unimplemented');
+		case 'circular':
+			return <CircularProgress {...variantProps} />;
+		case 'ellipsis':
+			return <EllipsisProgress {...variantProps} />;
 		default:
-			throw TypeError('invalid progress type');
+			throw Error('invalid progress type');
 	}
 };
 
