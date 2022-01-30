@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTheme } from '../../theme';
 import { TypographyTheme } from '../../theme/properties/typography';
 
 export interface TextProps {
@@ -8,11 +9,9 @@ export interface TextProps {
 
 const Text: React.FC<TextProps> = ({ variant = 'body', children, style }) => {
 	style = {
-		// ...useTheme().typography[variant],
-		fontFamily: '"Helvetica", sans-serif',
+		...useTheme().typography[variant],
 		boxSizing: 'border-box',
 		verticalAlign: 'middle',
-		display: 'block',
 		margin: 0,
 		...style,
 	};

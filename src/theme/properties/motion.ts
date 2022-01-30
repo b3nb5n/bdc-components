@@ -8,7 +8,9 @@ export const defaultMotionTheme: MotionTheme = {
 	animationSpeed: 1,
 };
 
-export const createMotionTheme = (theme?: Partial<MotionTheme>) => ({
+export type MotionThemeData = Partial<MotionTheme>;
+
+export const createMotionTheme = (theme?: MotionThemeData) => ({
 	...defaultMotionTheme,
 	...theme,
 });

@@ -23,7 +23,7 @@ interface TypographyRule {
 
 const defaultTypographyRule: TypographyRule = {
 	fontFamily: '"Helvetica", "Arial", sans-serif',
-	fontSize: '16px',
+	fontSize: '1rem',
 	fontWeight: 'normal',
 	fontStyle: 'normal',
 	lineHeight: 1.2,
@@ -44,39 +44,55 @@ export interface TypographyTheme {
 
 export const defaultTypographyTheme: TypographyTheme = {
 	fontFamily: '"Helvetica", "Arial", sans-serif',
-	heading: defaultTypographyRule,
+	heading: {
+		...defaultTypographyRule,
+		fontWeight: 800,
+		textTransform: 'capitalize',
+	},
 	h1: {
 		...defaultTypographyRule,
 		fontWeight: 800,
-		fontSize: '3rem',
+		fontSize: '4.8rem',
 		textTransform: 'capitalize',
 	},
 	h2: {
 		...defaultTypographyRule,
-		fontSize: '2.5rem',
+		fontSize: '3.6rem',
 		fontWeight: 800,
 		textTransform: 'capitalize',
 	},
-	h3: defaultTypographyRule,
-	h4: defaultTypographyRule,
+	h3: {
+		...defaultTypographyRule,
+		fontSize: '2.4rem',
+		fontWeight: 800,
+		textTransform: 'capitalize',
+	},
+	h4: {
+		...defaultTypographyRule,
+		fontSize: '1.6rem',
+		fontWeight: 800,
+		textTransform: 'capitalize',
+	},
 	body: {
 		...defaultTypographyRule,
 		lineHeight: 1.6,
 	},
 	label: {
 		...defaultTypographyRule,
+		lineHeight: 1.6,
 		textTransform: 'capitalize',
 	},
 	button: {
 		...defaultTypographyRule,
 		fontWeight: 600,
+		lineHeight: 1.6,
 		textTransform: 'capitalize',
 	},
 };
 
-export const createTypographyTheme = (
-	theme?: DeepPartial<TypographyTheme>
-): TypographyTheme => {
+export type TypographyThemeData = DeepPartial<TypographyTheme>;
+
+export const createTypographyTheme = (theme?: TypographyThemeData): TypographyTheme => {
 	if (!theme) return defaultTypographyTheme;
 	const fontFamily = theme.fontFamily ?? defaultTypographyTheme.fontFamily;
 
